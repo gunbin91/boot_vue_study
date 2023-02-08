@@ -3,10 +3,10 @@
     <ol class="list-group list-group-numbered">
       <li v-for="board in data.boardList" v-bind:key="board.boardSeq" class="list-group-item d-flex justify-content-between align-items-start">
         <div class="ms-2 me-auto">
-          <div class="fw-bold">Subheading</div>
-          Content for list item
+          <div class="fw-bold">{{board.title}}</div>
+          {{board.contents }}
         </div>
-        <span class="badge bg-primary rounded-pill">14</span>
+        <span class="badge bg-primary rounded-pill">{{board.boardSeq}}</span>
       </li>
       <li v-if="data.boardList.length == 0" class="list-group-item d-flex justify-content-between align-items-start">
         <div class="ms-2 me-auto">
@@ -24,6 +24,7 @@
 
 <script>
 import { reactive } from '@vue/reactivity'
+import { onMounted } from 'vue';
 import HelloWorld from './components/HelloWorld.vue'
 
 export default {
@@ -45,8 +46,14 @@ export default {
         data.boardList = reponse.data;
       });
     };
+
+    onMounted(() =>{
+      getList();
+    });
+
     return{
-      data: data
+      data: data,
+      getList: getList
     }
   }
 }

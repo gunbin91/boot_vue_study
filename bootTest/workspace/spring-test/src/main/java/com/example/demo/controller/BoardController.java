@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -36,7 +37,15 @@ public class BoardController {
 	@GetMapping
 	@ApiOperation(value="리스트", notes = "T_BOARD테이블의 모든 리스트")
 	public BaseResponse<List<Board>> getList(){
-		return new BaseResponse<List<Board>>(BaseResponseCode.SUCCESS, boardService.getList());
+		ArrayList<Board> list = new ArrayList<>();
+		for(int i=0; i<5; i++) {
+			list.add(Board.builder()
+					.boardSeq(i)
+					.title("제목")
+					.contents("컨텐츠").build());
+		}
+//		return new BaseResponse<List<Board>>(BaseResponseCode.SUCCESS, boardService.getList());
+		return new BaseResponse<List<Board>>(BaseResponseCode.SUCCESS, list);	// db연동 없이 테스트
 	}
 	
 	@GetMapping("/{boardSeq}")
