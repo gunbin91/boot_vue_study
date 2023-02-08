@@ -1,0 +1,11 @@
+1. NODE.JS설치
+2. cmd를 열어 npm --version 으로 설치확인
+3. cmd- vue프로젝트를 생성할 디렉터리로 이동하여 npm install vuejs 커맨드입력
+4. cmd- vue create app => 3버전 선택
+=> 오류시
+npm uninstall vue-cil -g
+npm install -g @vue/cli
+5. app디렉터리가 생성되면, 아래 명령어를 표기해준다. 그대로 입력!
+cd app
+npm run serve
+=> 서버가 실행된다.
