@@ -1,0 +1,40 @@
+▶ Set
+: 중복값을 허용하지 않는 배열 형태의 객체로 ES6에 새로 추가됨
+ex)
+let mySet = new Set();
+mySet.add("1");
+mySet.add("2");
+mySet.add("1");
+mySet.add("3");
+console.log(mySet);	=>	1, 2, 3
+=>
+- add: 추가
+- delete: 삭제
+- has: 해당 값이 있는지? ture/false
+
+▶ WeekSet
+: Set과 마찬가지로 중복값을 허용하지 않는 배열형태 지만, 참조값을 가지고 있는 객체만 저장이 가능
+(참조값으로 연결되어 있기 때문에 객체가 null이되면 Set에 저장된 객체값도 사라짐)	=>	가비지컬렉션
+ex)
+let ws = new WeakSet();
+let arr = [1,2,3,4,3];
+ws.add(arr);
+//ws.add("111");			=>	참조값이 없는 벨류이기 때문에 저장이 불가
+ws.add(function(){console.log("test")});	=>	메서드는 저장이 가능
+ws.add([5, 5, 5, 5]);
+
+▶ Map
+: key와 value값으로 구성된 객체로 ES6에 새로 추가됨
+ex)
+let m = new Map();
+m.set('name', 'baba');	=>	값추가
+m.get('name');		=>	벨류값 return
+m.delete('name');		=>	키값으로 삭제
+m.size();			=>	맵길이
+m.clear();			=>	전체삭제
+
+▶ WeakMap
+: key값을 객체 참조값(function, Array...)으로 하는 Map
+
+* WeakSet, WeakMap의 특징은 가비지컬렉션이 이뤄진다는 것이다.
+해당 객체에 저장된 객체값이 null이되어 쓸모없어질 경우 자동으로 삭제되기 때문!

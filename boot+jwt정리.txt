@@ -1,0 +1,12 @@
+▶ JWT구성
+- Header: Signature를 해싱하기 위한 알고리즘 정보
+- Payload: 서버/클라이언트간 실제로 사용될 정보
+- Signature: 토큰 유효성 검증을위한 문자열
+
+▶ JWT장점
+- BASE64 URL Safe Encoding을 사용 
+=> URL, Cookie, Header에서 모두 사용가능
+
+▶ JWT단점
+- Payload의 정보가 많아지면 네트워크 사용량 증가
+- 토큰이 클라이언트에 저장되기 때문에, 서버에서 클라이언트 토큰을 조작할 수 없음

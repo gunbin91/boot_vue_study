@@ -1,0 +1,28 @@
+package com.example.demo.controller;
+
+@RestController
+@RequestMapping("/board")
+public class BoardController {
+	@Autowired
+	private BoardService boardService;
+	
+	@GetMapping
+	public List<Board> getList(){
+		return boardService.getList();
+	}
+	
+	@GetMapping("/{boardSeq}")
+	public Board get(@PathVariable int boardSeq) {
+		return boardService.get(boardSeq);
+	}
+	
+	@GetMapping("/save")
+	public int save(Board parameter) {
+		return boardService.save(parameter);
+	}
+	
+	@GetMapping("/delete/{boardSeq}")
+	public void delete(@PathVariable int boardSeq) {
+		boardService.delete(boardSeq);
+	}
+}

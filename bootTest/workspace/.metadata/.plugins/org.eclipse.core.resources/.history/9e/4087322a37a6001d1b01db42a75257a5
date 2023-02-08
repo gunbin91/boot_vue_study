@@ -1,0 +1,14 @@
+package com.example.demo.Filter;
+
+import org.springframework.web.filter.GenericFilterBean;
+
+import com.example.demo.util.TokenProvider;
+
+public class JwtFilter extends GenericFilterBean{
+	
+	private TokenProvider tokenProvider;
+	
+	public JwtFilter(TokenProvider tokenProvider) {
+		this.tokenProvider = tokenProvider;
+	}
+}

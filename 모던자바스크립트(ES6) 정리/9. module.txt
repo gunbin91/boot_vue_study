@@ -1,0 +1,26 @@
+▶ module
+인클루드와 비슷하게 모듈화된 js파일을 불러와 사용할 수 있다.
+
+ex) mylogger.js
+export default const log = (data)=>{
+    console.log(data);
+}
+
+export const getTime = ()=>{
+    return Data.now();
+}
+
+export const getCurrentHour = ()=>{
+    return (new Data).getHours();
+}
+=> export 또는 export default 키워드를 사용하여 내보낼 객체를 정의한다.
+- export는 {}를 통하여 받아야 하는 반면, 
+- export default는 {}없이 받을 수 있다. 하나만 가능
+
+ex) main.js
+import log, {getTime, getCurrentHour} from './mylogger'	=>	.js는 쓸 필요가 없다.
+log('hi');						=>	바로 사용가능
+log(getCurrentHour());
+
+◆ keyword
+export, export default, import

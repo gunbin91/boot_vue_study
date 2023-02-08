@@ -1,0 +1,117 @@
+▶ 국가별 properties파일을 만들어 국가별 언어를 설정해두고 해당 메시지를 불러올 수 있다.
+
+1. configuration 패키지에 WebConfiguration.java파일 추가
+-----------------------------------------------------------------------------------------------------------------------------------------
+package com.example.demo.configuration;
+
+@Configuration
+public class WebConfiguration {
+
+	@Bean
+	public ReloadableResourceBundleMessageSource messageSource() {
+		ReloadableResourceBundleMessageSource source = new ReloadableResourceBundleMessageSource();
+
+		// 프로퍼티 파일의 경로(resource/messages 하위 message.properties파일을 의미함!
+		source.setBasename("classpath:/messages/message");	
+		source.setDefaultEncoding("UTF-8");
+		source.setCacheSeconds(60);
+		source.setDefaultLocale(Locale.KOREAN);
+		source.setUseCodeAsDefaultMessage(true);
+		
+		return source;
+	}
+}
+-----------------------------------------------------------------------------------------------------------------------------------------
+* 파일 명명 규칙 : 위처럼 basename을 설정했을 경우 " message_언어코드_국가코드.properties "파일을 찾는다.
+즉, 한국 = message_ko_KR.properties (KR생략가능?)
+
+2. resource/messages 하위 message_ko.properties 파일작성
+-----------------------------------------------------------------------------------------------------------------------------------------
+SUCCESS		= 정상적으로 처리되었습니다.
+ERROR		= 오류가 발생했습니다.
+DATA_IS_NULL	= 요청하신 {0} 데이터가 NULL 입니다.
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+3. MessageSource객체를 불러와 사용
+-----------------------------------------------------------------------------------------------------------------------------------------
+@Autowired
+private MessageSource messageSource;
+
+@GetMapping("/{boardSeq}")
+public BaseResponse<Board> get(@PathVariable int boardSeq) {
+	Board board = boardService.get(boardSeq);
+	if(board == null) {
+		throw new BaseException(BaseResponseCode.DATA_IS_NULL, new String[] {"게시물"});
+	}
+	return new BaseResponse<Board>(BaseResponseCode.SUCCESS, messageSource.getMessage(BaseResponseCode.SUCCESS.name(), null, null));
+}
+-----------------------------------------------------------------------------------------------------------------------------------------
+=> 고정 메시지일 경우 getMessageCode의 첫번째 인자만 넘겨주면 됨
+=> 메시지를 가변적으로 사용하고자 할 경우 두번째 인자로 String배열을 넘겨주면 된다.
+
+▶ 사용자 정의 Exception에서 다국어 메시지 처리
+1. configuration.exception 하위 패키지를 만들어 익셉션 추상 클래스 추가
+-----------------------------------------------------------------------------------------------------------------------------------------
+package com.example.demo.configuration.exception;
+
+public abstract class AbstractBaseException extends RuntimeException {
+
+	private static final long serialVersionUID = 8342234231880246631L;
+	
+	protected BaseResponseCode responseCode;
+	protected Object[] args;
+
+	public AbstractBaseException() {}
+
+	public AbstractBaseException(BaseResponseCode responseCode) { this.responseCode = responseCode; }
+	
+	public BaseResponseCode getResponseCode() { return responseCode; }
+
+	public Object[] getArgs() { return args; }
+
+	public void setArgs(Object[] args) { this.args = args; }
+}
+-----------------------------------------------------------------------------------------------------------------------------------------
+=> 만들어둔 BaseResponseCode를 인자로 만들어 익셉션 발생시에도 성공시와 동일한 형식으로 리턴시킬 수 있도록 한다.
+
+2. 추상클래스 구현
+-----------------------------------------------------------------------------------------------------------------------------------------
+package com.example.demo.configuration.exception;
+
+public class BaseException extends AbstractBaseException{
+	
+	private static final long serialVersionUID = 8342234231880246631L;
+
+	public BaseException() {}
+
+	public BaseException(BaseResponseCode responseCode) { this.responseCode = responseCode; }
+	
+	public BaseException(BaseResponseCode responseCode, String[] args) {
+		this.responseCode = responseCode;
+		this.args = args;
+	}	
+}
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+3. 위 익셉션 발생시 동작할 컨트롤러 구현( configuration.web.bind.annotation 하위패키지 )
+-----------------------------------------------------------------------------------------------------------------------------------------
+package com.example.demo.configuration.web.bind.annotation;
+
+@ControllerAdvice
+public class BaseControllerAdvice {
+	
+	@Autowired
+	private MessageSource messageSource;
+	
+	@ExceptionHandler
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	private BaseResponse<?> handleBaseException(BaseException e, WebRequest requeset){
+		return new BaseResponse(e.getResponseCode(), messageSource.getMessage(e.getResponseCode().name(), e.getArgs(), null));
+	}
+}
+-----------------------------------------------------------------------------------------------------------------------------------------
+=> 성공 시 리턴과 같이 BaseResponse객체를 리턴시키고 있다. ( 즉, 코드로 익셉션 구분 )
+
+4. 해당 익셉션 발생
+throw new BaseException(BaseResponseCode.DATA_IS_NULL, new String[] {"게시물"});

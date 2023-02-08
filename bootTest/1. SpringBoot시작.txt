@@ -1,0 +1,46 @@
+1. 이클립스에 STS4버전을 업데이트하거나, STS4버전을 다운로드받는다.
+2. 프로젝트 생성
+- New - other - Create new Spring Starter Project
+- Type = Maven 선택	/	snapshot 버전은 2버전대 추천
+- dependencies선택 
+=> 추후 pom.xml을 통해 메이븐 다운로드도 가능
+Spring Boot DevTools
+Lombok
+Spring Configuration Processor
+MyBatis Framework
+MySql Driver
+Spring Web
+
+3. 하위 configuration패키지를 추가하여
+DatabaseConfiguration.java 클래스 추가하여 아래와 같이 작성
+--------------------------------------------------------------------------------------
+package com.example.demo.configuration;
+
+import javax.sql.DataSource;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.context.annotation.Bean;
+
+public class DatabaseConfiguration {
+	@Bean
+	@ConfigurationProperties(prefix = "spring.datasource")
+	public DataSource dataSource() {
+		return DataSourceBuilder.create().build();
+	}
+}
+-------------------------------------------------------------------------------------
+
+4. application.properties파일에 아래와 같이 추가
+-------------------------------------------------------------------------------------
+spring.datasource.driverClassName = org.mariadb.jdbc.Driver
+spring.datasource.url = jdbc:mariadb://localhost:3306/example
+spring.datasource.username = 아이디
+spring.datasource.password = 비번
+-------------------------------------------------------------------------------------
+
+5. pom.xml에 마리아db추가
+<dependency>
+	<groupId>org.mariadb.jdbc</groupId>
+	<artifactId>mariadb-java-client</artifactId>
+</dependency>	

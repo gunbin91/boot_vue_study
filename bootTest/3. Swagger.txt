@@ -1,0 +1,40 @@
+▶ Swagger?
+Swagger 는 REST API를 설계, 빌드, 문서화 및 사용하는 데 도움이되는 
+OpenAPI 사양을 중심으로 구축 된 오픈 소스 도구 세트
+- 테스트 할 수 있는 UI를 제공
+
+▶ Swagger 설정
+1. maven 다운로드( https://mvnrepository.com/artifact/io.springfox )
+: 빈도수 높은 버전
+- SpringFox Swagger2
+- SpringFox Swagger UI
+2. pom.xml에 붙여넣기 
+: 아래와 같이 프로퍼티로 버전을 설정해 두고 여러개일 경우 변수 하나로 사용할 수도 있다.
+<properties>
+	<swagger.version>2.9.2</swagger.version>
+</properties>
+
+<dependency>
+	<groupId>io.springfox</groupId>
+	<artifactId>springfox-swagger-ui</artifactId>
+	<version>${swagger.version}</version>
+</dependency>
+
+* null 익셉션시 application.properties에 아래 추가
+spring.mvc.pathmatch.matching-strategy=ant_path_matcher
+
+3. localhost:8080/swagger-ui.html 접속하면 스웨거 화면을 확인할 수 있다.
+
+4. 컨트롤러 위 @Api어노테이션으로 해당 컨트롤러에 대한 스웨거 설명을 적을 수 있고, ex) @Api(tags = "게시판API")
+5. 메서드 위에 @ApiOpertaion, @ApiImplicitParams 어노테이션으로 메서드에 대한 설명을 적을 수 있다.
+ex) 
+@PutMapping("/save")
+@ApiOperation(value="리스트", notes = "T_BOARD테이블의 모든 리스트")
+@ApiImplicitParams({
+	@ApiImplicitParam(name = "boardSeq", value = "게시물 번호", example = "1"),
+	@ApiImplicitParam(name = "title", value = "게시물 제목", example = "제목"),
+	@ApiImplicitParam(name = "contents", value = "게시물 내용", example = "내용")
+})
+public int save(Board parameter) {
+	return boardService.save(parameter);
+}

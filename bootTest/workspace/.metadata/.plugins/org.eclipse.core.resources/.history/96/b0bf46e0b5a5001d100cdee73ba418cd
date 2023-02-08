@@ -1,0 +1,11 @@
+package com.example.demo.configuration.http;
+
+import lombok.Data;
+
+@Data
+public class BaseResponse {
+	private BaseResponseCode code;
+	private String message;
+	private T data;
+	
+}

@@ -1,0 +1,47 @@
+ES5이전: 변수는 var로만 선언이 가능하며, 해당 키워드 없이 선언도 가능하다. 또한 한번 선언된 변수는 어디에서나 참조가 가능
+ES6이후: let과 const로만 변수 선언이 가능, 중괄호({})안에서 선언된 변수는 해당 scope내에서만 참조가 가능하다.
+
+ex) 
+    function home() {
+        homvar = "homevar";
+        for (var i = 0; i < 100; i++) {
+        }
+        console.log(i);	        // => 100; 	100출력
+        
+        for (let j = 0; j < 100; j++) {
+        }
+        console.log(homvar);	// =>	homevar 출력	
+        console.log(j);	        // =>	not defined 에러!!
+    }
+
+    home();
+
+▶ const
+: const로 선언된 변수는 변경이 불가하다.
+ex) 
+const homename = "homename";
+homename = "test";		=>	에러!
+console.log(homename);
+
+▶ ES6에서의 변수 사용 키워드 tip
+- const를 기본으로 사용!
+- 단, 변경이 될 수 있는 변수는 let을 사용
+- var는 사용하지 않는다!
+
+* 주의) const는 불변을 의미하는 것이 아니라 값을 재할당 하는것이 불가능하다.
+즉, 배열과 오브젝트의 값은 변경이 가능하다.
+ex) const list = ["apple", "orange"];
+list.push("banana");	=> 가능
+
+▶ string 추가 메서드
+: 기존 ES5에서 사용 불가하던 표준 스트링 메서드가 추가가 됨
+
+let str = "hello world";
+let matchstr = "hello";
+    
+console.log(str.startsWith(matchstr));	=> true 해당 문자열로 시작하는지?
+console.log(str.endsWith("rld"));	=> true 해당 문자열로 끝나는지?
+console.log(str.includes("wo"));	=> true 해당 문자열이 포함되어 있는지?
+
+◆keyword
+let, const

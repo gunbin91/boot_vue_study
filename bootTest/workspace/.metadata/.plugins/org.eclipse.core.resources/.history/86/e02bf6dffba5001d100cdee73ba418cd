@@ -1,0 +1,7 @@
+package com.example.demo.domain;
+
+@Data
+public class MemberLoginRequestDto {
+    private String memberId;
+    private String password;
+}

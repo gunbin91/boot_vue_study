@@ -1,0 +1,54 @@
+package com.example.demo.Filter;
+
+import java.io.IOException;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.util.StringUtils;
+import org.springframework.web.filter.GenericFilterBean;
+
+import com.example.demo.util.TokenProvider;
+
+import io.jsonwebtoken.Claims;
+
+public class JwtFilter extends GenericFilterBean{
+	
+	public static final String AUTHORIZATION_HEADER = "authorization";
+	
+	private TokenProvider tokenProvider;
+	
+	public JwtFilter(TokenProvider tokenProvider) {
+		this.tokenProvider = tokenProvider;
+	}
+
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+		System.out.println("JwtFilter필터 호출");
+		HttpServletRequest httpServletRequest = (HttpServletRequest)request;
+		String jwt = resolveToken(httpServletRequest);
+		String requestTokenHeader = request.getHeader(AUTHORIZATION_HEADER);
+		Claims claims = tokenProvider.getClaims(requestTokenHeader);
+		String requestURI = httpServletRequest.getRequestURI();
+		
+		if(StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+//			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(jwt, requestURI);
+//			SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);	//	원래데이터값이 들어가야함
+		}else {
+			System.out.println("유효한 jwt 토큰이 없습니다.");
+		}
+		chain.doFilter(request, response);
+	}
+	
+	private String resolveToken(HttpServletRequest request) {
+		String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+//		if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+//			return bearerToken.substring(7);
+//		}
+		return bearerToken;
+	}
+}

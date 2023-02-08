@@ -1,0 +1,70 @@
+▶ 공통 Response
+: 단순히 객체나 변수값 하나만을 return하는것이 아닌 상태값, 메시지, 데이터 등을 
+통합적으로 묶어 리턴형식을 일치시켜 api개발등에도 용이하도록 함
+
+1. 하위 configuration.http 패키지를 만든다.
+
+2. 리턴될 코드를 특정키워드로 사용하기 위해 enum생성
+----------------------------------------------------------------------------------------------
+package com.example.demo.configuration.http;
+
+public enum BaseResponseCode {
+	SUCCESS(200),	//	성공
+	ERROR(500);	//	에러
+
+	private int status;
+	
+	BaseResponseCode(int status) {
+		this.status = status;
+	}
+	
+	public int status() {
+		return status;
+	}
+}
+
+----------------------------------------------------------------------------------------------
+
+3. 공통 response 리턴데이터 클래스 생성
+----------------------------------------------------------------------------------------------
+package com.example.demo.configuration.http;
+import lombok.Data;
+
+@Data
+public class BaseResponse<T> {
+	private BaseResponseCode code;
+	private String message;
+	private T data;
+	
+	public BaseResponse(BaseResponseCode code, T data) {
+		this.code = code;
+		this.data = data;
+	}
+}
+----------------------------------------------------------------------------------------------
+
+4. 컨트롤러의 리턴 타입을 위에서 만든 response타입으로 변경
+----------------------------------------------------------------------------------------------
+@GetMapping
+@ApiOperation(value="리스트", notes = "T_BOARD테이블의 모든 리스트")
+public BaseResponse<List<Board>> getList(){
+	return new BaseResponse<List<Board>>(BaseResponseCode.SUCCESS, boardService.getList());
+}
+
+@GetMapping("/delete/{boardSeq}")
+public BaseResponse<Boolean> delete(@PathVariable int boardSeq) {
+	return new BaseResponse<Boolean>(BaseResponseCode.SUCCESS, boardService.delete(boardSeq));
+}
+----------------------------------------------------------------------------------------------
+
+5. 스웨거를 통해 확인해보면 아래와 같이 response형식이 일치되는 것을 확인할 수 있다.
+{
+  "code": "SUCC",
+  "data": {
+    "boardSeq": 0,
+    "contents": "string",
+    "regData": "string",
+    "title": "string"
+  },
+  "message": "string"
+}

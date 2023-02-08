@@ -1,0 +1,27 @@
+package com.example.demo.configuration;
+
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)	//	@PreAuthorize어노테이션을 메소드 단위로 추가하기 위해 사용
+public class SecurityConfig extends WebSecurityConfigurerAdapter{
+
+	 @Override // 시큐리티 관련사항 무시될 경로지정
+	 public void configure(WebSecurity web) {
+		 web.ignoring()
+		 	.antMatchers("/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**", "/swagger/**");
+	 }
+	 
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.httpBasic().disable()	// 비인증시 로그인화면으로 이동되지 않도록 ..
+			.authorizeHttpRequests()
+			.antMatchers("/api/test").permitAll()
+			.anyRequest().authenticated();
+	}
+	
+}

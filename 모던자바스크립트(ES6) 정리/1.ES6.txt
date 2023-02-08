@@ -1,0 +1,95 @@
+▶ ES6?
+: ECMA Script6 = ES2015 = 모던 자바스크립트
+최근 점유율이 상당히 높음, 
+브라우저 호환성의 문제가 있다. 하지만 babel을 사용하여 ES5로 전환하여 사용이 가능하기 때문에
+이 또한 해결이 가능해 점유율의 상당부분 차지하고 있음
+
+▶ ES6 호환성 사용을 위한 바벨/웹팩 세팅
+1. NODE.JS 설치
+: https://nodejs.org/en/
+
+2. npm 환경변수 설정
+
+3. 프로젝트 경로(ex) src/main)에서 cmd 아래 명령어 실행
+npm init -y : 프로젝트에서 npm 프로그램 시작을 의미하는 명령어 (실행 후 package.json 파일 자동 생성 완료)
+npm install --save-dev webpack webpack-cli : 스크립트 간 의존성 관계를 하나의 파일로 bundling 해주는 webpack 설치
+npm install --save-dev babel-loader : es6++ 이상의 문법에 대해 브러우저에 관계없이 동작되도록 컴파일 해주는 컴파일러
+npm install --save-dev @babel/cli @babel/core @babel/preset-env : 위와 동일
+npm install @babel/polyfill : babel 컴파일러만 설치 시 es6++ 문법에 대해 변환이 안되는 몇몇 가지 문제를 해결한 패키지
+
+4. .babelrc 파일생성하여 아래와 같이 작성
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "browsers": [
+            "last 2 versions",
+            "not ie <= 9"
+          ]
+        }
+      }
+    ]
+  ]
+}
+
+5. webpack.config.js 파일 생성하여 아래와 같이 작성
+const path = require('path');
+ 
+module.exports = {
+    entry: {
+        index : ['@babel/polyfill', './webapp/js/bundle/index.js'] // 빌드를 진행 하려는 파일 위치
+        /*
+        test1 : ['@babel/polyfill', './webapp/js/bundle/test1.js'], // 각각 파일로 빌드를 할 수 있짐만 비효율 적이므로 index.js 파일에 export 하여 한곳으로 빌드 추천
+        test2: ['@babel/polyfill', './webapp/js/bundle/test2.js']
+        */
+    },
+    output: { // 빌드 된 파일이 저장될 위치
+        path: path.resolve(__dirname, './webapp/js/bundle'),
+        filename: 'webpack.bundle.js', // filename : '[name].bundle.js',
+        // library: "bundle", // 이름을 지정 할 경우 bundle.es6Code() 형태로 호출
+        libraryTarget: "umd", // output.libraryTarget을 umd로 설정하면 모듈은 <script src=""> 로드 뿐만 아니라 모든 방식의 로더에서 사용할 수 있음
+    },
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env']
+                    }
+                }
+            }
+        ]
+    },
+    devtool: 'source-map',
+    mode: 'development'
+};
+6. pakcage.json파일수정
+: 자동으로 생성된 해당 파일의 scripts부분을 아래와 같이 수정한다.
+"scripts": {
+  "dev": "webpack -w --mode development --devtool inline-source-map",
+  "build": "webpack --mode production"
+},
+
+=> npm run dev, npm run build를 실행할 수 있음
+( -w는 변경이 일어날 경우 자동으로 재빌드를 수행할 수 있는 옵션 )
+
+7. npm run dev 또는 npm run build로 변환
+=> webpack.config.js파일에 output에 작성한 경로로 변환된 파일이 저장되며,
+해당 파일을 임포트하여 사용하면 된다.
+ex) <script src="./js/bundle/webpack.bundle.js"></script>
+
+▶ 웹팩 서버실행
+1. npm install --save-dev webpack-dev-server
+2. pakcage.json script추가
+"scripts": {
+    "dev": "webpack -w --mode development --devtool inline-source-map",
+    "build": "webpack --mode production",
+    "devserver": "webpack-dev-server"
+  },
+=> 아래 devserver로 명령어를 추가해준다.
+3. npm run devserver로 서버실행 가능

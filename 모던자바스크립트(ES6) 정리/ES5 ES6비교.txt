@@ -1,0 +1,110 @@
+https://doozi0316.tistory.com/entry/JavaScript-ECMAScript%EB%9E%80-ES5%EC%99%80-ES6%EC%9D%98-%EC%B0%A8%EC%9D%B4var-const-let-%ED%99%94%EC%82%B4%ED%91%9C-%ED%95%A8%EC%88%98-class
+참고
+
+>> 템플릿 리터럴
+- ES5: 문자열 표기 큰따옴표(") 또는 작은따옴표(') 사용
+- ES6: 백틱(`) 사용 (물결 특수문자 shift없이)
+=> 아래와 같이 +없이 변수 사용이 가능해진다.
+ES5: console.log("저의 이름은 " + name + "이고, 나이는 " + age + "살 입니다.");
+ES6: console.log(`저의 이름은 ${name}이고, 나이는 ${age}살 입니다.`);
+
+>> 함수선언
+ES5는 function키워드를 사용하지만, ES6에서는 화살표로 표현한다.
+
+- ES5
+function test(arg1, arg2){ console.log("aa" + arg1 + " / " + arg2); };
+var test = function(arg1, arg2){ console.log("aa" + arg1 + " / " + arg2); };
+                                                                                                                                                      
+-ES6
+var test = (arg1, arg2) => { console.log("aa"); };
+var test = arg1 => console.log(arg1);	
+=> 인자가 1개인 경우 괄호()를 꼭 사용할 필요는 없고, 한줄표현이 가능하다면 중괄호({}) 생략가능
+var test = func => ({id: "31"});
+=> 객체 반환함수
+
+
+>> this 키워드 바인딩
+ES5: 객체 안에 선언된 함수 안의 this는 window객체를 가르키므로, 객체값으로 사용하기 어렵다.
+ES6: 객체 안에 선언된 함수 안의 this도 해당 인스턴트를 가르키므로 객체값 사용가능
+
+ex)
+var obj = {
+  value: 10,
+
+  // 메소드 호출
+  show: function () {
+    console.log(this.value); // 10
+
+    // 함수 호출
+    function show_01 () {
+      console.log(this.value); // undefined
+    }
+    show_01();
+
+    // 화살표 함수
+    function show_02 = () => {
+      console.log(this.value); // 10
+    }
+    show_02();
+  }
+}
+obj.show();
+
+>> 변수 사용
+ES5: var 키워드로만 변수 선언이 가능하며, 재할당과 재선언이 자유로움
+ES6: let - [재선언x, 재할당o] , const - [재선언x, 재할당x]
+>>>> 스코프
+var: 중괄호({})내부에서 선언된 변수도 외부에서 사용 가능하다.
+let, const: 중괄호({}) 내부에서만 사용 가능 (java와 동일)
+
+ex) 
+if (true) {
+  var i = 0;
+}
+console.log(i); // 0
+if (true) {
+  let j = 10;
+}
+console.log(j); // ReferenceError
+if (true) {
+  const k = 100;
+}
+console.log(k); // ReferenceError
+
+>> 모듈
+ES5: 모듈화 var slider = require(./slider.js)
+ES6: 모듈화
+- 내보내는쪽: ex) export default 'module' 또는 export 'module'
+- 받는쪽: ex) import module from "./module"
+ex) 
+=> carousel.js
+export class Carousel {
+    constructor() {
+        this.calc();
+    }
+    calc() {
+        console.log(10);
+    }
+}
+ 
+=> 받는쪽
+import {Carousel as cr} from "./carousel";	=> as키워드를 통해 키워드를 변경할 수도 있다.
+cosnt carousel = new cr();
+import { multi, SuperMulti } from "./Multiplay";	=> 여러 모듈이 있다면 여러개도 가능
+
+>> 클래스
+ES5: 클래스가 없음
+ES6: class키워드로 클래스 생성이 가능
+ex) 
+class Add {
+  constructor(arg1, arg2) {
+    this.arg1 = arg1;
+    this.arg2 = arg2;
+  }
+  calc() {
+    return this.arg1 + "+" + this.arg2 + "=" + (this.arg1 + this.arg2);
+  }
+}
+
+var num = new Add(5, 8);
+console.log(num.calc()); // 5 + 8 = 13

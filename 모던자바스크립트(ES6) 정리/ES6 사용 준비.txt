@@ -1,0 +1,53 @@
+>>>>> ES6? 
+: ECMAScript의 줄임말로 자바스크립트 표준 버전
+ES6문법의 호환성 문제때문에 ES5로 변환과정을 거쳐야 한다.
+이를 자동으로 변환해 주려면 babel을 설치해 주어야 한다.
+
+>>>>> babel설치
+1. babel을 쉽게 설치하기 위해 node.js를 먼저 설치해준다.
+2. node설치 후 터미널(cmd)실행 
+- 노드 설치확인(버전확인): node --version
+- npm 설치확인(버전확인): npm --version
+3. cmd에서 프로젝트 작업할 경로로 이동
+4. 명령어로 package.json파일 만들기
+- npm init
+5. 패키지 설치
+- npm install --save-dev babel-cli
+- npm install -g babel-cli		=> -g옵션으로 전역에서 사용할 수 있게함
+- npm install --save-dev babel-preset-es2015
+6. 설치 후 pakcage.json파일을 열어보면
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.20.7",
+    "@babel/core": "^7.20.12",
+    "@babel/preset-env": "^7.20.2"
+  }
+}
+
+=>
+"scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+해당 부분을
+"scripts": { "build": "babel ./js -d ./es5 -w" },
+로 변경
+빌드하게 되면 ./es5로 변환된 파일이 복제된다.
+
+7. .babelrc파일 생성
+{
+    "presets": ["es2015"],
+    "plugins": []
+}
+위와같이 작성
+8. npm run build 
+해주게 되면 자동으로 변환되어 ./es5 폴더로 변환된 파일이 복제된다.

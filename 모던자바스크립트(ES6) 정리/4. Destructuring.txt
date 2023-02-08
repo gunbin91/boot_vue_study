@@ -1,0 +1,87 @@
+▶ Destructuring Array
+let data = ["a", "b", "c"];
+let value1 = data[0];	=>	a
+let value2 = data[1];	=>	b
+위와 같이 인덱스를 사용한 변수값 초기화가 가능하지만,
+
+let [value1, ,value2] = data
+console.log(value1, value2);
+변수를 배열형식으로 디스트럭팅이 가능하다.
+
+▶ Destructuring Object
+객체값도 디스트럭팅이 가능하다
+
+let obj = {
+	name: "crong",
+	address: "corea",
+	age: 10
+}
+let {name, age} = obj
+console.log(name, age)	=> "crong", 10
+=> let name = obj.name; 같은기능
+
+let {name:myName, age:myAge} = obj;
+console.log(myName, myAge);	=> 변수명을 다르게 선언가능
+=> let myName = obj.name; 같은기능
+
+▶ 활용예제 JSON파싱
+let news = [
+    {
+        title: "sbs",
+        image: "img_s",
+        newslist: "어쩌구저쩌구"
+    },
+    {
+        title: "mbc",
+        image: "img_m",
+        newslist: "왈가왈부"
+    }
+];
+    
+let [, {title, image:img}] = news;	=>	배열안의 객체의 변수를 가져올 수 있다.
+console.log(title, img);
+
+▶ 활용예제2 메서드의 매개변수로도 사용가능
+function prt([, {newslist}]){
+    console.log(newslist);
+}
+prt(news);	=>	왈가왈부 
+
+▶ 객체 생성 방법
+const obj = {
+    name: 'babo',
+    age: 23
+}
+console.log(obj);
+ 
+//////////////////////
+   
+function getObj(){
+    const name = "crong";
+    const getName = function(){
+        return name;
+    }
+    const setName = function(newName){
+        name = newName;
+    }
+    
+    return{
+        name
+    }
+}
+let obj2 = getObj();
+console.log(obj2)		=>	obj.return객체를 출력
+ 
+/////////////////////////////
+
+let name = 'bibi';
+let age = 32;
+const obj3 = {
+    name,
+    age,
+    getName(){
+        console.log(name);
+    }
+}
+console.log(obj3);
+=> 1번의 객체 생성방식과 동일한 방식, 객체 변수명을 입력하면 자동으로 name: name변수값으로 적용됨

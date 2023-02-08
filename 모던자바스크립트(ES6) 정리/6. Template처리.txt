@@ -1,0 +1,53 @@
+▶ Template처리
+: Json응답을 받은 데이터를 dom객체에 추가하기 위한 작업...(데이터 + HTML문자)
+ex)
+const data = [
+    {
+        name: 'coffe',
+        order: true
+    },
+    {
+        name: 'star',
+        order: false
+    }
+]
+
+const tem = `<div>hi ${data[1].name}</div>`;	=>	== "<div> hi " + data[1].name + "</div>"
+console.log(tem);				=>	<div>hi star</div>
+
+=> 따옴표가 아닌 백틱(`)으로 사용하면 위와같이 +연산자 없이 데이터 처리가 가능하다.
+
+▶ Tagged Template literals
+ex)
+const data = [
+    {
+        name: 'coffe',
+        order: true,
+        items: ['americano', 'milk', 'greenTea']
+    },
+    {
+        name: 'star',
+        order: false
+    }
+]
+
+function fn(tags, a, b){
+    console.log(tags);
+    console.log(a);
+    console.log(b);
+}
+fn`안녕하세요. 이름은 ${data[0].name} 주문상품은 ${data[0].items[0]}입니다`;
+=> + 연산자로 출력한 결과의 데이터부분을 제외한 문자열 부분이 배열로 첫번째 인자로 넘어간다.
+=> 이후 데이터 부분은 순서대로 파라미터로 넘어감
+=> (3) ['안녕하세요. 이름은 ', ' 주문상품은 ', '입니다', raw: Array(3)]
+coffe
+americano
+
+fn(`안녕하세요. 이름은 ${data[0].name} 주문상품은 ${data[0].items[0]}입니다`);
+=> 괄호로 감싸 출력된 메서드는 해당 방법은 다르게 동작, 변환된 문자열 그대로 첫번째 파라미터만 넘어간다.
+=> 안녕하세요. 이름은 coffe 주문상품은 americano입니다
+undefined
+undefined
+
+◆ keyword
+`(백틱)
