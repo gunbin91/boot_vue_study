@@ -1,0 +1,30 @@
+▶ DOM(Document Object Model)
+: (웹)문서를 제어하기 위한 객체 모델
+
+- 최상위 노드: document
+ex) document.getRootNode()
+=> document
+
+- 자식노드: 
+document.childNode(1).childeNodes(2) ...
+형식으로 접근가능
+
+▶ DOM객체 접근
+위 방식으로 접근하기 불편하기 때문에 
+실제로는 아래 형식으로 객체를 가져오게 된다.
+ex) document.querySelector('h1')
+
+▶ BOM(Browser Object Model)
+: 브라우저를 제어하기 위한 객체 모델
+ex) window(최상위객체로 생략가능), 
+document, history, location, navigator, alert() ...
+
+- window.alert() = alert()
+
+*tip: 웹문서는 순차적으로 읽어오기 때문에 스크립트 태그를 먼저 쓰거나
+먼저 인클루드하면 객체에 접근이 어렵다.
+=> 해결 방안
+- 스크립트 태그를 최하단에 배치한다.
+- 또는 window.onload()를 이용하여 스크립트를 사용한다.
+=> html, js, css등 웹문서가 모두 로드된 이후에 해당 함수가 호출되어
+먼저 선언해도 정상 작동!!
