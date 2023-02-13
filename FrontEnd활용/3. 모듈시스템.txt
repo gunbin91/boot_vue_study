@@ -1,0 +1,15 @@
+▶ ES6의 모듈화
+기존 ES5의 <script src="a.js"/>형식으로 인클루드하여 사용하는 방식은
+파일 자체를 삽입하는 것이기 때문에 변수나, 메서드등 그대로 사용이 가능하지만
+ES6의 모듈화는 원하는 내용만 임폴트할 수 있도록 지원한다.
+
+-  내보내고자 하는 내용을 export 또는 export default
+- <script type="modul" src="a.js"/>
+ES6에서는 아래와 같이 임폴트 시킬 수 있다.
+js부분에서는 
+<script type="module">
+import {변수} from '파일명'
+</script>
+
+▶ common.js 모듈화
+내보내는쪽에서 exports.내용, 받는쪽은 require('받는파일') 형식으로 가져온다.

@@ -1,0 +1,62 @@
+▶ 이벤트 기본 기능제거
+: 클릭이벤트 등 콜백함수 인자로 받는 이벤트 객체의 아래 메서드로
+기본 기능을 제거하고 다른 기능으로 바꿀 수 있다.
+Event.preventDefault()
+
+▶ Array 활용
+- map()
+: 전체 배열 순회(값 수정이 필요할 때)
+ex)
+const numbers = [1, 2, 3, 4, 5]
+const result = numbers.map(
+    (number) => {
+    return number * 2
+});
+=> return으로 값을 변경해줌
+
+- some()
+: 조건에 맞는 값이 하나라도 있는 경우 true 아니면 false반환하여 검색하는 기능
+( 두번째 인자로 index도 받을 수 있음 )
+ex)
+const numbers = [1, 2, 3, 4, 5]
+const t = numbers.some((v) => {
+        return v == 1;
+    })
+console.log(t);	//	true
+
+- every()
+: some과 조건에 모든값이 일치할 경우에만 true
+ex)
+const numbers = [1, 2, 3, 4, 5]
+const e = numbers.every((v)=>{
+        return v < 10
+})
+console.log(e)	//	true;
+
+** 위 메서드들의 내용이 한줄일 경우 {}와 return 키워드는
+제거가 가능하다
+
+- filter()
+: 조건에 맞는 요소만 반환하여 새로운 배열을 만듬
+ex) 
+const numbers = [1, 2, 3, 4, 5]
+const f = numbers.filter((v) =>{
+    return v % 2 === 0
+})
+console.log(f);	//	[2, 4]
+
+- reduce()
+: 누적값 계산?
+누적값, 현재값, 인덱스, 배열을 인자로 받아
+인덱스 1부터 순회하여 리턴값을 누적
+ex)
+const r = numbers.reduce((acc, cur, idx, src) =>{
+    console.log(acc, cur, idx, src);  
+    return acc + cur;
+})
+console.log(r);	//	15
+=>
+1 2 1 (5) [1, 2, 3, 4, 5]
+3 3 2 (5) [1, 2, 3, 4, 5]
+6 4 3 (5) [1, 2, 3, 4, 5]
+10 5 4 (5) [1, 2, 3, 4, 5]
