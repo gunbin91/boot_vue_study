@@ -1,0 +1,18 @@
+1. Visual Studio Code 설치
+: Vue를 사용할 에디터
+
+2. Plug-in 추천
+- korean 언어팩
+- indent-rainbow	: 	탭의 가독성을 높여준다.
+- auto rename tag	:	시작태그 변경 시 닫는태그도 자동으로 변경해준다.
+- CSS peek	:	ctrl+클릭할 시 CSS가 어디에 선언됐는지 찾아줌
+- Live Server	:	코드가 변경이 되었을때 자동으로 서버에 반영?
+- ESLint		:	코드에 에러가 있는지 검사해줌
+- Volar		:	vue3용 공식 에디터 플러그인
+- vue vscode snippets	:	싱글파일 컴포넌트를 빠르게 생성해줌
+- HTML to CSS autocompletion
+- HTML CSS Support	:	CSS 자동완성기능
+
+
+- 크롬 웹스토어 : Vue.js devtools(레거시X)
+=> 개발자모드
