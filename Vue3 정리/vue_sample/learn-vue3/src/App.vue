@@ -5,6 +5,8 @@
     <p>{{ reMessage }} <button v-on:click="remChange">반응버튼</button></p>
     <h3>일반 메시지:</h3>
     <p>{{ noMessage }} <button v-on:click="nomChange">일반버튼</button></p>
+    <h3>Options API 메시지:</h3>
+    <p>{{ counter }} <button v-on:click="increment">optionsAPI</button></p>
   </div>
 </template>
 
@@ -29,6 +31,16 @@ export default {
       remChange,
       nomChange,
     };
+  },
+  data() {
+    return {
+      counter: "Options API",
+    };
+  },
+  methods: {
+    increment() {
+      this.counter = this.counter + "!";
+    },
   },
 };
 </script>
