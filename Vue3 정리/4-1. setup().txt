@@ -1,0 +1,26 @@
+◆ setup
+
+▶ setup()에서 객체를 반환하여 template에 노출시킬 수 있다.
+ex)
+----------------------------------------------------------------------------------
+<template>
+  <button @click="count++">{{ count }}</button>
+</template>
+<script>
+import { ref } from 'vue'
+
+export default {
+  setup() {
+    const count = ref(0);
+
+    return {
+      count
+    };
+  },
+}
+</script>
+------------------------------------------------------------------------------------
+=> setup()함수내 변수or메서드 등을 정의하고, return에 해당 선언객체를 리턴까지 시켜주면 템플릿에서 사용이 가능하다
+=> 또한 변수는 ref로 선언할 시, 반응형 상태로 변수상태가 바뀌는 즉시 실시간 템플릿에도 적용된다.
+
+▶ setup의 첫번째 인자는 props, 두번째는 context{ attrs, slots, emit, expose }

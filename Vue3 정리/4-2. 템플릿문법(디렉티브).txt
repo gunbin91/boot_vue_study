@@ -1,0 +1,98 @@
+◆ 디렉티브
+: v-once, v-html과 같이 v-... 처럼 태그에 사용되는 것을 의미한다.
+
+▶ v-once
+: ref()로 선언된 변수는 템플릿과 바인딩 되지만, 
+태그내 v-once를 적용하게 되면 바인딩하지 않음
+ex)
+-------------------------------------------------------------------------------
+<template>
+	<div>
+	<p>문자열 : {{ message }}</p>
+    	<p v-once>문자열 : {{ message }}</p>
+    	<button v-on:click="message += '!'">메시지변경</button>
+	</div>
+</template>
+
+<script>
+import { ref } from 'vue';
+
+export default {
+	setup() {
+		const message = ref('안녕하세요');
+		return {
+			message,
+		};
+	},
+};
+</script>
+-------------------------------------------------------------------------------
+=> 버튼클릭시 '!'가 계속 더해지지만, <p v-once>내부의 message는 변경되지 않는다.
+
+▶ v-html
+: 출력할 문자열 변수가 html문법으로 구성되어 있다면, 해당 태그를 인식할 수 있도록 해줌
+( 단 XSS취약점 문제가 있어서 주의가 필요하다. )
+=> v-once와 달리 변수를 태그내 삽입하는게 아닌 속성값 처럼 선언한다.
+ex) <p v-html="변수"></p>
+-------------------------------------------------------------------------------
+<template>
+	<div>
+    	<p> {{ htmlMessage }}</p>
+    	<p v-html="htmlMessage"></p>
+	</div>
+</template>
+
+<script>
+import { ref } from 'vue';
+
+export default {
+	setup() {
+    		const htmlMessage = ref('<h2>안녕</h2>');
+		return {
+      			htmlMessage,
+		};
+	},
+};
+</script>
+-------------------------------------------------------------------------------
+
+▶ v-bind
+: v-bind는 속성값을 바인딩 시켜주는 기능을 한다. 
+템플릿에서 ref()로 선언된 변수는 템플릿에서 이중괄호{{ }}로 바인딩 되지만,
+속성값에 {{ }}를 사용할 수 없기 때문에 v-bind로 연결시켜준다.
+ex)
+-------------------------------------------------------------------------------
+<template>
+	<div>
+    	<input v-bind:type="type" :value="input_value" :disabled="disabled" />
+	</div>
+</template>
+
+<script>
+import { ref } from 'vue';
+
+export default {
+	setup() {
+    		const type = ref('text');
+    		const disabled = ref(true);
+    		const input_value = ref('홍길동');
+		return {
+      			type,
+      			disabled,
+      			input_value,
+		};
+	},
+};
+</script>
+-------------------------------------------------------------------------------
+** v-bind는 자주 사용되는 디렉티브 이기 때문에 키워드없이 :로만 사용이 가능하다!
+** 객체로 넣어 다중속성으로 작성할 수도 있다.
+ex) 
+const attrs = {
+	type: 'password',
+	placeholder: '비밀번호를 입력해주세요'
+}
+<input v-bind="attrs" />
+
+▶ 이중괄호 {{ }} 안에는 함수호출은 물론 모든 스크립트 문법표현이 가능하다.
+ex) {{ isInputDisabled ? '예' : '아니오' }}
