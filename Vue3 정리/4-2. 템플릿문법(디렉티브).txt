@@ -96,3 +96,28 @@ const attrs = {
 
 ▶ 이중괄호 {{ }} 안에는 함수호출은 물론 모든 스크립트 문법표현이 가능하다.
 ex) {{ isInputDisabled ? '예' : '아니오' }}
+
+▶ v-on:
+: 버튼등 이벤트 함수처리가 필요한 부분은 v-on: 콜백함수명을 적어준다.
+또한 v-on:은 @로 대체할 수도 있다.
+ex) <button v-on:click="test">테스트</button>
+	== <button @click="test">테스트</button>
+
+◆ 그외 디렉티브들
+▶ v-text 
+: 텍스트를 보여줌
+ex) <p v-text="변수"></p> === <p>{{ 변수 }}</p>
+
+▶ v-cloak
+: 태그가 마운트 된 이후에 사라짐
+=> 용도??
+템플릿내 {{ }}변수를 사용하게 되면, 
+스크립트가 실행되기 전까지 그대로 {{}}가 보여지게 된다.
+이런 경우를 방지하기 위한 용도등으로 사용됨
+ex) 
+<style>
+[v-cloak]{
+    display: none;
+}
+<p v-cloak>{{message}}</p>
+</style>

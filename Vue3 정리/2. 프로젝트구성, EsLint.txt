@@ -14,7 +14,7 @@ vue프로젝트는 vue/cli 또는 vite를 사용하여 생성할 수 있다.
   npm run lint
   npm run dev	=> 개발서버실행
 
-◆ 파일 살펴보기
+◆ vue프로젝트 구성 살펴보기
 
 ▶ vite.config.js
 : 비트로 생성된 뷰프로젝트 설정파일
@@ -54,6 +54,9 @@ alias: {
 ( import { createApp } from 'vue' 
 createApp(App).mount('#app') )
 => index.html파일 <div id="app"></div>영역에 마운트 된다!
+
+3. 즉, 맨처음 보여지는 페이지는 app.vue를 컴포넌트로 적재시킨 
+main.js모듈을 임폴트하는 index.html파일이다!
 
 ◆ eslint
 : EsLint를 설치하게 되면, .eslintrc.cjs파일이 만들어지게 된다.
@@ -103,6 +106,3 @@ app.component('todo-item', {...})
 
 - props정의 시 객체로 상세하게 정의
 ex) props: { "status" } [X] => props: { status: {type: String, required: ture, ....} } [O]
-
-3. 즉, 맨처음 보여지는 페이지는 app.vue를 컴포넌트로 적재시킨 
-main.js모듈을 임폴트하는 index.html파일이다!
