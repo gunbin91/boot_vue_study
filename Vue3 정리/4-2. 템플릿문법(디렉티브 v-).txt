@@ -121,3 +121,32 @@ ex)
 }
 <p v-cloak>{{message}}</p>
 </style>
+
+▶ v-memo
+: 선언된 반응형 데이터의 변경이 일어날 경우에만 바인딩을 동기화시켜줌
+----------------------------------------------------------------------------------
+ex)
+<template>
+  <div v-memo = [b]>
+    {{ a }}<br/>
+    {{ b }}
+  </div>
+  <button @click="a++">a++</button>
+  <button @click="b++">b++</button>
+</template>
+
+<script>
+import { ref } from 'vue';
+
+export default {
+  setup () {
+    const a = ref(10);
+    const b = ref(20);
+
+    return {a, b}
+  }
+}
+</script>
+----------------------------------------------------------------------------------
+=> a++버튼 클릭시 변화가 없지만,
+b++버튼 동작 후에는 그동안에 일어난 모든 a,b의 변화를 화면에 동기화
