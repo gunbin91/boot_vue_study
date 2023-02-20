@@ -1,23 +1,35 @@
 <template>
-  <div class="card" style="width: 18rem">
+  <div class="card" style="width: 18rem" v-for="item in cardList" :key="item.index">
     <img src="..." class="card-img-top" alt="..." />
     <div class="card-body">
-      <h5 class="card-title">Card title</h5>
+      <h5 class="card-title">{{item.title}}</h5>
       <p class="card-text">
-        Some quick example text to build on the card title and make up the bulk
-        of the card's content.
+        {{item.contents}}
       </p>
-      <a href="#" class="btn btn-primary">Go somewhere</a>
+      <a href="#" class="btn btn-primary">{{ test }}</a>
     </div>
   </div>
+  {{ test }}
 </template>
 
 <script>
-console.log("appcard module");
+import { reactive } from 'vue';
+
 export default {
+  props:{
+    test: {
+      type: String,
+      default: '테스트',
+    }
+  },
   setup() {
-    console.log("appcard setup");
-    return {};
+    const cardList = reactive([
+      {title: '제목1', contents: '내용1'},
+      {title: '제목2', contents: '내용2'},
+      {title: '제목3', contents: '내용3'},
+      {title: '제목4', contents: '내용4'},
+    ])
+    return {cardList};
   },
 };
 </script>

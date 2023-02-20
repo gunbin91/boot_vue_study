@@ -1,22 +1,18 @@
 <template>
-  <div>
-    <TheNavTest></TheNavTest>
-    <viewTest></viewTest>
-    <AppCard /><app-card />
-  </div>
+  <PropsTest title="제목ㅋㅋ" :contents="con"/>
 </template>
 
 <script>
-import TheNavTest from "./components/TheNav.vue";
-import TheView from "./components/TheView.vue";
+import { ref } from "vue";
+import PropsTest from "./components/PropsTest.vue"
 
 export default {
   setup() {
-    return {};
+    const con = ref('내용1');
+    return {con};
   },
   components: {
-    TheNavTest,
-    viewTest: TheView,
+    PropsTest
   },
 };
 </script>
