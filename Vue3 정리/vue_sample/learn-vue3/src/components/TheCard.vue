@@ -1,35 +1,28 @@
 <template>
-  <div class="card" style="width: 18rem" v-for="item in cardList" :key="item.index">
-    <img src="..." class="card-img-top" alt="..." />
+  <div class="card" style="width: 18rem">
+    <!-- <img src="..." class="card-img-top" alt="..." /> -->
     <div class="card-body">
-      <h5 class="card-title">{{item.title}}</h5>
-      <p class="card-text">
-        {{item.contents}}
-      </p>
-      <a href="#" class="btn btn-primary">{{ test }}</a>
+      <h5 class="card-title">{{ title }}</h5>
+      <p class="card-text">{{ contents }}</p>
+      <a href="#" class="btn btn-primary">버튼</a>
     </div>
   </div>
-  {{ test }}
 </template>
 
 <script>
-import { reactive } from 'vue';
-
 export default {
-  props:{
-    test: {
+  props: {
+    title: {
       type: String,
-      default: '테스트',
-    }
+      default: "디폴트제목",
+    },
+    contents: {
+      type: String,
+      default: "디폴트내용",
+    },
   },
   setup() {
-    const cardList = reactive([
-      {title: '제목1', contents: '내용1'},
-      {title: '제목2', contents: '내용2'},
-      {title: '제목3', contents: '내용3'},
-      {title: '제목4', contents: '내용4'},
-    ])
-    return {cardList};
+    return {};
   },
 };
 </script>

@@ -36,6 +36,8 @@ ex)  const count = ref(0);
 => ref()는 reactive로 value속성값을 가지고 있는 객체로 반응형을 만든것?
 그래서 ref()로 선언된 변수에 접근하기 위해서는 .value를 사용한다.
 
+=> 주의) 단 태그의 속성으로 사용할 시 .value를 붙이지 않고 사용한다.
+
 
 ▶ ref()로 선언된 변수를 reactive()에서 사용
 - 객체로 선언된 reactive에서 ref값의 사용은 .value를 해줄 필요가 없다.
