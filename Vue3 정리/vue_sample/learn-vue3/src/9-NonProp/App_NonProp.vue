@@ -1,19 +1,19 @@
 <template>
   <div>
-    <RefTemplate/>
+    <nonPropVue title="제목" contents="내용"/>
   </div>
 </template>
 
 <script>
-import RefTemplate from '@/components/RefTemplate.vue'
+import nonPropVue from '@/components/NonProp.vue'
 export default {
   setup () {
     
 
     return {}
   },
-  components:{
-    RefTemplate
+  components: {
+    nonPropVue
   }
 }
 </script>

@@ -1,20 +1,18 @@
 <template>
   <div>
-    <RefTemplate/>
+    <SlotTest>버어튼</SlotTest>
   </div>
 </template>
 
 <script>
-import RefTemplate from '@/components/RefTemplate.vue'
+import SlotTest from '@/components/SlotTest.vue'
 export default {
   setup () {
     
 
     return {}
   },
-  components:{
-    RefTemplate
-  }
+  components:{SlotTest}
 }
 </script>
 
