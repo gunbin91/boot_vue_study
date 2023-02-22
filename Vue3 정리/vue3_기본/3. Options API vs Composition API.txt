@@ -1,0 +1,61 @@
+Vue2에서는 Options API를 사용,
+Vue3에서는 Composition API를 사용 (Options API도 사용은 가능)
+
+** tip
+vue vscode snippets가 설치되어 있다면
+vbase만 입력하면, 자동으로 아래 기본 소스구성을 만들 수 있다.
+
+◆ Options API vs Composition API
+: Options API는 데이터, 메서드.. 등으로 소스 관점에서 분리를 하지만
+Composition API는 논리적 관심사로 그룹핑 할 수 있는 장점이 있기 때문에 분석 및 유지보수가 쉽다.
+(코드 재사용(그룹핑)이 용이하기 때문에 Composition API라고 부름)
+
+▶ Options API
+ex) vbase
+-----------------------------------------------------------------------------------
+export default {
+  data() {
+    return {
+      counter: 0,
+    };
+  },
+  methods: {
+    increment() {
+      this.counter++;
+    },
+  },
+  mounted() {
+    console.log("컴포넌트가 마운트 되었습니다.");
+  },
+};
+-----------------------------------------------------------------------------------
+- data(): 사용할 데이터 영역
+- methods: 메서드를 정의할 영역
+- mounted(): 마운트될때 자동 호출되는 함수
+
+
+▶ Composition API
+ex) vbase-3
+-----------------------------------------------------------------------------------
+import { onMounted, ref } from "vue";
+
+export default {
+  setup() {
+    const counter = ref(0);
+
+    const increment = () => counter.value++;
+
+    onMounted(() => {
+      console.log("마운트 되었습니다.");
+    });
+
+    return {
+      counter,
+      increment,
+    };
+  },
+};
+-----------------------------------------------------------------------------------
+
+* https://vuejs.org/examples/#hello-world
+위 경로에서 OptionsAPI와 CompositionAPI의 같은 기능 코드 비교를 할 수 있다.

@@ -1,6 +1,15 @@
+- 기본
 https://gymcoding.notion.site/Vue-js-3-cd9bb8ec6fec4ba9b388c808caf61880
 
 git clone https://github.com/gymcoding/learn-vue3.git
 cd learn-vue3
 git checkout <branch name> // 예) git checkout 1_init_project
 git branch // 변경된 현재 브랜치 확인 ^^
+
+- 실전
+git clone https://github.com/gymcoding/vue3-posts.git
+cd vue3-posts
+git checkout <branch name> // 예) git checkout 1_project_settings
+git branch // 변경된 현재 브랜치 확인 ^^
+
+https://www.gymcoding.co/vuejs-3-

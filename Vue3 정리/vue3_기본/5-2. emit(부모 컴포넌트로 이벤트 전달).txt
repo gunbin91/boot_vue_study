@@ -1,0 +1,181 @@
+◆ emit
+: 부모 컴포넌트로 이벤트를 올려줄 수 있음
+
+▶ emit 사용법
+
+>>> 1. 자식 컴포넌트에서 $emit 키워드를 통해 이벤트 전달
+: 태그 내 v-on이벤트 디렉티브를 통해 $emit("이벤트", 파라미터) 형식으로 이벤트를 전달해 줄 수 있으며
+첫번째 인자는 이벤트메서드명, 두번째 인자부터는 파라미터로 인식한다.
+
+ex) EmitTest.vue
+------------------------------------------------------------------------------------
+<template>
+  <div>
+    <button v-on:click="$emit('createPost', '홍길동')">Success</button>
+  </div>
+</template>
+------------------------------------------------------------------------------------
+
+>>> 2. 부모 컴포넌트에서 전달받은 이벤트를 v-on을 통해 사용
+: 자식컴포넌트에서 넘겨준 메서드명을 v-on:메서드명 으로 이벤트처럼 사용이 가능하며,
+자식컴포넌트에서 v-on이벤트가 실행될 때 실행시킬 수 있다.
+
+------------------------------------------------------------------------------------
+<template>
+  <EmitTest @create-post="test"></EmitTest>
+</template>
+
+<script>
+import EmitTest from "./components/EmitTest.vue";
+
+export default {
+  components: {
+    EmitTest,
+  },
+  setup() {
+    const test = (name) => {
+      console.log("post", name);
+    };
+
+    return { test };
+  },
+};
+</script>
+------------------------------------------------------------------------------------
+
+▶ setup 함수에서 전달
+: setup함수는 (props, context)를 인자로한며, context는 { attrs, slots, emit, expose }로 구성되어있기 때문에
+emit은 context인자를 통해서 전달도 가능하다.
+
+* or setup(props, {emit}) 으로 디스트럭팅도 가능
+ex) 
+------------------------------------------------------------------------------------
+<template>
+  <div>
+    <!-- <button v-on:click="$emit('createPost', '홍길동')">Success</button> -->
+    <button @click="createPost">Success</button>
+  </div>
+</template>
+
+<script>
+export default {
+  setup(props, context) {
+    const createPost = () => {
+      context.emit("createPost", "홍길동");
+    };
+    return { createPost };
+  },
+};
+</script>
+------------------------------------------------------------------------------------
+
+▶ vue3에 추가된 emits 속성
+: 추가를 안해도 정상적으로 작동은 하지만, 공식적으로는 등록을 해주는것이 좋다.
+( 주의) 해당 옵션으로 이벤트를 넘겨줄 수 있는건 아님 )
+ex) 함수명: 벨리데이션함수
+또는 emits: ['함수명', '함수명2', ...]
+
+emits:{
+	createPost: (name) =>{
+		if(!name) return false;
+		return true;
+	}
+}, set up(){ ... }
+
+** 추가를 꼭 해주어야 할 이유중 하나는 지정하지 않을 시
+Non-Prop속성이 자식 컴포넌트로 상속되는 문제가 발생한다.
+
+◆ props와 emit을 사용하여 컴포넌트간 v-model 사용하기
+
+>> 1. 자식 컴포넌트
+: value속성으로 부모 컴포넌트로 부터 받아온 props속성값을 사용하고,
+$emit으로 인풋의 벨류값을 넘겨준다.
+--------------------------------------------------------------------------------------------
+....
+<input type="text" :value="modelValue" 
+@input="$emit('update:modelValue', $event.target.value)"/>
+....
+<script>
+export default {
+  setup() {
+    return {};
+  },
+  props: ['modelValue'],
+};
+</script>
+--------------------------------------------------------------------------------------------
+
+** 주의!!) 컴포넌트간 v-model을 구현하기 위해서는 
+- props: modelValue
+- emit: update:modelValue
+라는 키워드로 사용해야 한다.
+( 부모 컴포넌트에서 v-model사용시 해당 키워드로 동작하기 때문 )
+
+>> 2. 부모 컴포넌트
+: 부모 컴포넌트에서는 자식컴포넌트 태그안에 v-model만 선언해 주면 된다.
+--------------------------------------------------------------------------------------------
+...
+<model-input v-model="username" />
+...
+<script>
+import ModelInput from "@/components/ModelInput.vue";
+import { reactive, ref } from "vue";
+
+export default {
+  components: {
+    ModelInput,
+  },
+  setup() {
+    const username = ref("a");
+
+    return { username };
+  },
+};
+</script>
+--------------------------------------------------------------------------------------------
+=> 위 코드를 원래대로라면 아래처럼 코드가 길어진다.
+<model-input :model-value="username"
+    @update:modelValue=" (value) => { username = value; } " />
+=> 이렇게 구현할 경우에는 modelValue, update:modelValue 키워드를 지킬 필요는 없음
+
+
+◆ computed()를 통해 자식컴포넌트에서도 v-model사용
+: 위 원리로 computed()를 사용하게 되면, 부모/자식 컴포넌트 모두 v-model사용이 가능하다.
+
+1. 부모 컴포넌트에서는 똑같이 v-model을 사용해준다.
+2. 자식 컴포넌트에서도 v-model객체를 바인딩 시켜주고,
+해당 바인딩 객체 computed()함수에 get(), set()을 구현해준다.
+
+ex) 
+------------------------------------------------------------------------------------------
+<input type="text" v-model="inputValue" />
+<script>
+setup(props, context) {
+    const inputValue = computed({
+      get() {
+        return props.modelValue;
+      },
+      set(value) {
+        context.emit("update:modelValue", value);
+      },
+    });
+    return { inputValue };
+  },
+  props: {
+    modelValue: {
+      type: String
+    },
+  },
+</script>
+------------------------------------------------------------------------------------------
+=> 마찬가지로, modelValue, update:modelValue 키워드명을 지켜줘야 한다.
+
+▶ v-model 전달인자로 키워드 변경
+: v-model로 부모/자식컴포넌트간 구현시 modelValue 해당 키워드를 지켜줘야 하지만,
+v-model 전달인자로 해당 인자값을 변경할 수도 있다.
+ex)
+<BookComponent v-model:title="bookTitle" />
+
+=> 자식 컴포넌트에서는 title로 props를 받고,
+emit은 update:title 을 사용하게 된다!
+=> 해당 방법으로 여러개의 props를 v-model로 사용도 가능하다.

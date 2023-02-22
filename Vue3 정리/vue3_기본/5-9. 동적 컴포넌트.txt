@@ -1,0 +1,36 @@
+◆ 동적 컴포넌트(Dynamic Components)
+: 컴포넌트를 동적으로 할당할 수 있는 방법
+
+1. import한 컴포넌트를 ref로 할당한다.
+2. 할당된 컴포넌트 객체를 <component>태그의 :is속성에 바인딩
+3. ref로 바인딩한 컴포넌트 객체를 다른 컴포넌트로 바꿔줌으로서 동적으로 변경이 가능
+------------------------------------------------------------------------------------
+<template>
+  <div>
+    <button 
+      @click="changeCurrentComp(DynamicApple)"> 사과 </button>
+    <button 
+      @click="changeCurrentComp(DynamicBanana)"> 바나나 </button>
+    <hr />
+    <component :is="currentComp" />
+  </div>
+</template>
+<script setup>
+import DynamicApple from "@/components/DynamicApple.vue";
+import DynamicBanana from "@/components/DynamicBanana.vue";
+import { ref } from "vue";
+
+const currentComp = ref(DynamicApple);
+const changeCurrentComp = (comp) => {
+  currentComp.value = comp;
+};
+</script>
+------------------------------------------------------------------------------------
+
+▶ shallowRef()
+: shallowRef는 객체 자체가 바뀌었을때 반응하는 반응형 데이터 할당 함수이다.
+즉, 객체의 속성값이 바뀌었을때는 동작되지 않고, 객체 자체가 바뀌었을때만 동작하기 때문에
+* 동적 컴포넌트 객체를 구현할때는 shallowRef()로 할당하는것이 좋다.
+
+ex) const currentComp = shallowRef(DynamicApple);
+=> 이후 사용법은 ref와 같음

@@ -1,0 +1,157 @@
+◆ 디렉티브
+: v-once, v-html과 같이 v-... 처럼 태그에 사용되는 것을 의미한다.
+
+▶ v-once
+: ref()로 선언된 변수는 템플릿과 바인딩 되지만, 태그내 v-once를 적용하게 되면 바인딩되지 않기 때문에
+최초 랜딩시에만 적용되고 실시간 연동되지 않는다.
+ex)
+-------------------------------------------------------------------------------
+<template>
+	<div>
+	<p>문자열 : {{ message }}</p>
+    	<p v-once>문자열 : {{ message }}</p>
+    	<button v-on:click="message += '!'">메시지변경</button>
+	</div>
+</template>
+
+<script>
+import { ref } from 'vue';
+
+export default {
+	setup() {
+		const message = ref('안녕하세요');
+		return {
+			message,
+		};
+	},
+};
+</script>
+-------------------------------------------------------------------------------
+=> 버튼클릭시 '!'가 계속 더해지지만, <p v-once>내부의 message는 변경되지 않는다.
+
+▶ v-html
+: 출력할 문자열 변수가 html문법으로 구성되어 있다면, 해당 태그를 인식할 수 있도록 해줌
+( 단 XSS취약점 문제가 있어서 주의가 필요하다. )
+=> v-once와 달리 변수를 태그내 삽입하는게 아닌 속성값 처럼 선언한다.
+ex) <p v-html="변수"></p>
+-------------------------------------------------------------------------------
+<template>
+	<div>
+    	<p> {{ htmlMessage }}</p>
+    	<p v-html="htmlMessage"></p>
+	</div>
+</template>
+
+<script>
+import { ref } from 'vue';
+
+export default {
+	setup() {
+    		const htmlMessage = ref('<h2>안녕</h2>');
+		return {
+      			htmlMessage,
+		};
+	},
+};
+</script>
+-------------------------------------------------------------------------------
+
+▶ v-bind
+: v-bind는 속성값을 바인딩 시켜주는 기능을 한다. 
+템플릿에서 ref()로 선언된 변수는 템플릿에서 이중괄호{{ }}로 바인딩되어 출력할 수 있지만,
+속성값에는 {{ }}를 사용할 수 없기 때문에 v-bind로 연결시켜준다.
+ex)
+-------------------------------------------------------------------------------
+<template>
+	<div>
+    	<input v-bind:type="type" :value="input_value" :disabled="disabled" />
+	</div>
+</template>
+
+<script>
+import { ref } from 'vue';
+
+export default {
+	setup() {
+    		const type = ref('text');
+    		const disabled = ref(true);
+    		const input_value = ref('홍길동');
+		return {
+      			type,
+      			disabled,
+      			input_value,
+		};
+	},
+};
+</script>
+-------------------------------------------------------------------------------
+** v-bind는 자주 사용되는 디렉티브 이기 때문에 키워드없이 :로만 사용이 가능하다!
+
+▶ v-bind 다중속성
+: 객체로 넣어 다중속성으로 작성할 수도 있다.
+다중 속성으로 작성할 시 v-bind="객체" 형태로 넣어주면 된다.
+ex) 
+const attrs = {
+	type: 'password',
+	placeholder: '비밀번호를 입력해주세요'
+}
+=>
+<input v-bind="attrs" />
+
+▶ 이중괄호 {{ }} 안에는 함수호출은 물론 모든 스크립트 문법표현이 가능하다.
+ex) {{ isInputDisabled ? '예' : '아니오' }}
+
+▶ v-on:
+: 버튼등 이벤트 함수처리가 필요한 부분은 v-on: 콜백함수명을 적어준다.
+또한 v-on: 이벤트 속성도 자주 사용되기 때문에 @로 대체할 수도 있다.
+ex) <button v-on:click="test">테스트</button>
+	== <button @click="test">테스트</button>
+
+◆ 그외 디렉티브들
+▶ v-text 
+: 텍스트를 보여줌
+ex) <p v-text="변수"></p> === <p>{{ 변수 }}</p>
+
+▶ v-cloak
+: 태그가 마운트 된 이후에 사라짐
+=> 용도??
+템플릿내 {{ }}변수를 사용하게 되면, 
+스크립트가 실행되기 전까지 그대로 {{}}가 보여지게 된다.
+이런 경우를 방지하기 위한 용도등으로 사용됨
+ex) 
+<style>
+[v-cloak]{
+    display: none;
+}
+<p v-cloak>{{message}}</p>
+</style>
+
+▶ v-memo
+: 선언된 반응형 데이터의 변경이 일어날 경우에만 바인딩을 동기화시켜줌
+----------------------------------------------------------------------------------
+ex)
+<template>
+  <div v-memo = [b]>
+    {{ a }}<br/>
+    {{ b }}
+  </div>
+  <button @click="a++">a++</button>
+  <button @click="b++">b++</button>
+</template>
+
+<script>
+import { ref } from 'vue';
+
+export default {
+  setup () {
+    const a = ref(10);
+    const b = ref(20);
+
+    return {a, b}
+  }
+}
+</script>
+----------------------------------------------------------------------------------
+=> a++버튼 클릭시 변화가 없지만,
+b++버튼 동작 후에는 그동안에 일어난 모든 a,b의 변화를 화면에 동기화
+

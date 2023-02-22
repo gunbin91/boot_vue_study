@@ -1,0 +1,81 @@
+◆ 뷰 라우터(Vue Router)
+: Vue.js를 이용하여 싱글 페이지 어플리케이션(SPA)을 구현할 때 사용하는 공식 라우터
+
+*라우터(Router)?
+: 일반적으로 네트워크간 데이터를 전송하는 장치를 의미,
+Vue에서 라우터란 URL에 따라 어떤 페이지를 보여줄지 매핑해주는 라이브러리!
+ex) /home 경로요청이 들어왔을 때 Home.vue컴포넌트를 렌더링 해라! 라는 역할을 수행
+
+* 라우트(Route)?
+: 라우트는 경로와 컴포넌트의 매핑 정보
+ex) /home <-> Home.vue
+
+▶ 뷰라우터 사용 준비
+1. vue-router모듈 설치: npm install vue-router
+
+2. src>views(임의디렉터리) 디렉터리를 생성하여 
+이동될 경로의 페이지를 보여줄 HomeView.vue, AboutView.vue 뷰(임의) 컴포넌트 생성
+
+3. src>router(일반적) 디렉터리를 생성하여 index.js파일 생성
+- 라우트 정의( 패스/뷰컴포넌트 매핑 ) 
+* 라우트에 등록될 수 있는 속성은 path, component, name ... ( $route.name 등으로 불러올 수 있다 )
+(추가적인 속성은 공식문서 참조..)
+
+- 라우터 생성(라우트추가)
+- export 
+ex)
+----------------------------------------------------------------------------------------------------
+import { createRouter, createWebHistory } from "vue-router";
+import HomeView from '@/views/HomeView.vue';
+import AboutView from '@/views/AboutView.vue';
+
+const routes = [
+  {
+    path: '/',
+    component: HomeView,
+  },
+  {
+    path: '/about',
+    component: AboutView,
+  }
+];
+
+const router = createRouter({
+  history: createWebHistory('/'),
+  routes,
+  mode: 'history'
+});
+
+export default router;
+----------------------------------------------------------------------------------------------------
+
+4. main.js CreateApp객체에 router추가
+----------------------------------------------------------------------------------------------------
+...
+import router from '@/router'
+
+createApp(App).use(router).mount('#app');
+----------------------------------------------------------------------------------------------------
+
+▶ RouterView 로 동적 컴포넌트
+: 경로에 따라 바뀌어야 할 컴포넌트 위치에 <RouterView></RouterView> 추가
+
+=> 위와 같이 설정 시 TheView.vue컴포넌트에 <RouterView/>를 삽입하고
+/경로 이동시 HomeView, /about 경로 이동시 AboutView를 동적 컴포넌트 시키게 된다.
+
+▶ RouterLink 로 컴포넌트 할당
+: a태그를 이용하여 경로 이동을 시켜도 정상 작동을 확인할 수 있으나, a태그는 페이지가 리로딩(새로고침)된다.
+따라서 Vue.js에서는 RouterLink태그를 이용하여 to속성을 통해 페이지를 새로고침 없이 이동(동적 컴포넌트 할당)시킨다.
+ex) <RouterLink to="/about">About</RouterLink>
+
+▶ router/route 전역객체
+: main.js에서 app.use(router)을 사용함으로서, router객체를 전역에서 사용할 수 있게된다.
+
+- $route (템플릿에서 사용시)
+: 라우트에대한 정보를 가지고 있는 객체 $route.path 등으로 현재 경로를 알 수 있다.
+=> 해당 정보는 /src/router/index.js에 route를 등록할 때 저장했던 속성들..(정해진 속성만 사용가능)
+** 스크립트에서 사용시 const route = useRoute();
+
+- $router (템플릿에서 사용시)
+: 라우터객체로 $router.push('경로') 등의 함수로 경로이동을 시킬 수 있다.
+** 스크립트에서 사용시 const router = useRouter();
