@@ -68,6 +68,8 @@ createApp(App).use(router).mount('#app');
 따라서 Vue.js에서는 RouterLink태그를 이용하여 to속성을 통해 페이지를 새로고침 없이 이동(동적 컴포넌트 할당)시킨다.
 ex) <RouterLink to="/about">About</RouterLink>
 
+---
+
 ▶ router/route 전역객체
 : main.js에서 app.use(router)을 사용함으로서, router객체를 전역에서 사용할 수 있게된다.
 
@@ -79,3 +81,41 @@ ex) <RouterLink to="/about">About</RouterLink>
 - $router (템플릿에서 사용시)
 : 라우터객체로 $router.push('경로') 등의 함수로 경로이동을 시킬 수 있다.
 ** 스크립트에서 사용시 const router = useRouter();
+
+▶ 동적 경로
+: routes객체 매핑정보 등록 시 경로를 ':경로명' 으로 등록하게되면,
+해당 부분은 아무 경로나 허용하게 되고, 파라미터로도 사용이 가능하다.
+( 스프링에서 파라미터 경로 매핑과 동일한 형태 )
+ex)
+----------------------------------------------------------------------------------------------------
+const routes = [
+ {
+    path: '/posts/:id',
+    component: PostDetailView
+    name: 'edit',
+  },
+];
+----------------------------------------------------------------------------------------------------
+ex) /posts/test 로 접근 후 {{ $route.params }}를 출력해보면
+{ "id" : "test" } 가 출력되게 된다.
+
+▶ 쿼리스트링
+: 경로 뒤 ?후에 붙는 쿼리스트링(겟파라미터) 또한 $route객체로 받을 수 있다.
+ex) /posts/test?searchText=love
+=> {{ $route.query }} => { "searchText": "love" }
+
+cf) 이외에도 경로#뒤에붙는 값은 $route.hash 등등이 있다 (공식문서 참조)
+
+▶ router.push()
+: 앞서 router.push('경로')를 하게되면 페이지 이동이라고 설명했다.
+이는 route 매핑정보를 정의할때 path속성을 찾아서 해당 컴포넌트를 할당하는 것이다.
+즉 페이지 이동은 이 객체정보와 일치하는 객체정보를 push해주어도 작동한다.
+
+ex)
+router.push('/users/test')		//	경로를 지정하여 이동(기본 컴포넌트 할당방식)
+router.push( {path: '/users/test'} )	//	해당 path속성과 일치하는 컴포넌트 할당
+router.push( {name: 'users'} )		//	해당 name속성과 일치하는 컴포넌트 할당(name속성도 중복으로 사용할 수 없기 때문에 가능)
+
+** 추가로 push를 통한 페이지 이동 시 경로파라미터, 쿼리스트링 등등을 넘겨줄 수 있다.
+ex) router.push( {name: 'users', params: {'username': 'test' } } );
+router.push( {path: '/users/test', query: {'plan': 'private' } } )
