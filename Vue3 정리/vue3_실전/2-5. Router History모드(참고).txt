@@ -1,0 +1,27 @@
+◆ Router History 모드
+: 라우터를 등록할 때 history 모드를 등록할 수 있다.
+---------------------------------------------------------------------------
+...
+const router = createRouter({
+  history: createWebHistory('/'),
+  routes,
+  mode: 'history'
+});
+---------------------------------------------------------------------------
+
+- Hash - createWebHashHistory()
+- History - createWebHistory()
+- Memory - createMemoryHistory()
+
+▶ history모드 차이?
+: 히스토리 모드의 차이를 알기전에 용어 정리를 해보자
+- SPA(Single Page Application) : Vue, React 처럼 하나의 페이지에서 동작하는 어플리케이션
+- SSR(Server Side Rendering): 서버에서 랜더링 페이지까지 내려주는 구조
+- CSR(Client Side Rendering): 클라이언트에서 렌더링 페이지를 만드는 구조 (Vue, React)
+
+- hash모드: url에 #이 붙게되며, 서버요청 시 주소까지만 보내고 뒤에 경로는 보내지 않는다.
+- History모드: 서버 요청시 뒤 경로까지 모두 보내게 됨
+
+* hash모드의 단점: SEO(검색엔진최적화)에 나쁜 영향을 끼치게 된다.
+주소 요청 시 #으로 보내게 되는데, 이를 수집하지 않게되는 경우가 많기 때문에
+기본적으로 history모드로 사용하면 되겟다...

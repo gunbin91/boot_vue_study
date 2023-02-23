@@ -1,0 +1,21 @@
+◆ 404 Page Not Found
+: 404페이지를 따로 설정할 필요 없이, 라우터렌딩을 이용하면 된다.
+
+▶ 라우트에 정규식으로 경로를 지정하여 NotFoundPage vue를 추가
+ex)
+...
+import NotFoundView from '@/views/NotFoundView.vue'
+...
+{
+    path: '/:pathMatch(.*)*',
+    component: NotFoundView,
+    name: 'notfound',
+},
+
+>> 위와같이 설정만 해주면 끝, 정규식 동적경로를 사용했기 때문에 $route.params 를 사용할 수 있다.
+ex) /iam/development 라는 잘못된 경로 접근시
+=> $route.params => [ "iam", "development" ]
+=> 배열로 경로가 넘어온다.
+
+▶ 정규식 패턴
+ex) 특정 경로를 포함하여 접근할 때, path: '/:pathMatch(.*)*', => path: '/user-:pathMatch(.*)*',

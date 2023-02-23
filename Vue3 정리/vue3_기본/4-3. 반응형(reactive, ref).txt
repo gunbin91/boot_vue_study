@@ -55,6 +55,11 @@ const message = ref('hello');
 const arr = reactive({[message]);
 console.log( arr[0].value )	=> .value로 접근
 
+▶ ref(), reactive() 장단점
+- reactive는 기본타입의 객체를 할당할 수 없지만, ref는 레퍼런스 객체또한 할당이 가능하다.
+- 단, ref는 .value를 붙여야 하는단점이 있고, 객체할당이 가능하다는 장점이 있다.
+- reactive는 .value를 붙여쓰지 않아도 되는 장점이 있고, 객체 할당을 하면 반응성을 잃는 단점이있다
+
 ▶ 반응형 상태 재할당( toRef, toRefs )
 : 반응형 상태를 새로운 변수에 재할당 할 경우 반응형 상태를 잃게된다.
 따라서 반응형 상태를 유지하기 위해서는 toRef() 또는 toRefs()로 재할당 시켜주어야 한다.

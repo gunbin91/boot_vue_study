@@ -1,0 +1,23 @@
+◆ 테스트용 REST API 서버준비
+: github json server 검색 ( https://github.com/typicode/json-server)
+=> 테스트용 REST API 서버
+
+1. npm install -D json-server 
+: 전역X 해당 프로젝트에서만 설치(빌드시제외)
+
+2. 프로젝트 루트경로에 db.json파일이 만들어지며,
+api요청시 해당 파일의 내용들을 내려준다.
+
+3. npx json-server --watch db.json
+: 전역으로 설치하지 않았기 때문에 npx를 붙여서 실행
+
+=> npx json-server --watch db.json --port 5000
+포트변경 실행
+
+* vs코드 터미널 오른쪽 +버튼을 통해 여러개의 터미널을 실행할 수 있다.
+
+◆ Axios 통신모듈 설치
+github axios 공식문서 참고
+=> https://github.com/axios/axios
+
+>> npm i axios

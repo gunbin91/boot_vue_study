@@ -6,7 +6,7 @@
         <div class="card-body">
             <h5 class="card-title">{{ contents }}</h5>
             <p class="card-text">{{ createdAt }}</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+            <a href="#" class="btn btn-primary">수정</a>
         </div>
     </div>
 </template>

@@ -1,8 +1,8 @@
 <template>
     <div>
-        <h2>제목</h2>
-        <p>내용</p>
-        <p class="text-muted">2023-01-01</p>
+        <h2>{{ form? form.title : ''}} / id : {{ id }}</h2>
+        <p>{{ form? form.contents : ''}}</p>
+        <p class="text-muted">{{ form? form.createdAt : '' }}</p>
         <hr class="my-4"/>
         <div class="row g-2">
             <div class="col-auto">
@@ -26,17 +26,25 @@
 </template>
 
 <script setup>
+import { getPostById } from '@/api/posts';
 import router from '@/router';
-import { useRoute } from 'vue-router';
+import { reactive, ref, watchEffect } from 'vue';
 
-const route = useRoute();
-const id = route.params.id;
+const props = defineProps(['id']);
+
+const form = ref(getPostById(props.id));
 
 const goListPage = ()=>{
     router.push({name: 'posts'})
 };
 
 const goEditPage = ()=>{
-    router.push({name: 'edit', params: { 'id': id }});
+    router.push({name: 'edit', params: { 'id': props.id }});
 }
+
+watchEffect(()=>{
+    form.value = getPostById(props.id);
+});
+
+
 </script>

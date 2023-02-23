@@ -1,0 +1,43 @@
+◆ Router Props
+: 뷰 컴포넌트는 RouterView로도 사용할 수 있고, 하위 컴포넌트로도 사용될 수 있다.
+하지만, 하위 컴포넌트로 사용될 경우 route.params를 사용하기 어려워지고
+RouterView로 사용될 경우 props사용이 불가하기때문에 라우터에서 props기능을 지원한다.
+
+▶ route.params / props 사용
+1. 라우트 등록시 props속성을 true로 설정
+  {
+    path: '/posts/:id',
+    component: PostDetailView,
+    name: 'detail',
+    props: true,
+  }
+
+2. props속성을 true로 하게 될 경우 route.params 파라미터를 props에서도 사용이 가능하게 된다.
+ex) /posts/test 접근시
+- route.params.id => 'test'
+- const props = defineProps(['id']);
+props.id => 'test'
+
+=> 결과적으로 RouterView / 하위컴포넌트 둘다 경로 파라미터를
+props로 통일해서 사용할수가 있게 된다.
+
+▶ props모드
+: props:true 뿐만 아니라 객체나 함수등을 지정해 좀 더 세밀하게 사용할 수도 있다.
+
+- 객체모드 ex)
+const routes = [
+  {
+    path: '/promotion/from-newsletter',
+    component: Promotion,
+    props: { newsletterPopup: false }
+  }
+]
+
+- 함수 모드 ex)
+const routes = [
+  {
+    path: '/search',
+    component: SearchUser,
+    props: route => ({ query: route.query.q })
+  }
+]

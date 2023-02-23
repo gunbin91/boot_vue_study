@@ -17,8 +17,9 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
             <RouterLink class="nav-link active" aria-current="page" to="/">Home</RouterLink>
-            <RouterLink class="nav-link" to="/about">about</RouterLink>
+            <RouterLink class="nav-link" to="/about">About</RouterLink>
             <RouterLink class="nav-link" to="/posts">PostList</RouterLink>
+            <RouterLink class="nav-link" to="/nested">Nested</RouterLink>
           </div>
           <div class="d-flex">
             <button class="btn btn-outline-light"  type="button" 

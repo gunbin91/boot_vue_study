@@ -1,0 +1,48 @@
+◆ 중첩된 라우트(Nested Routes)
+: 특정 메뉴페이지마다 고정되는 레이아웃이 별도로 존재할 수 있기 때문에,
+중첩으로 RouteView를 사용할 수도 있다.
+
+▶ 중첩라우트 사용
+
+1. 고정될 페이지에 다시 <RouteView>를 사용한다.
+
+2. 하위에 다시 할당될 컴포넌트들을 라우트에 children속성으로 등록한다.
+-------------------------------------------------------------------------------------------
+{
+  // => 고정될 레이아웃 페이지
+  path: '/nested',
+  component: NestedView,
+  name: 'nested',
+  // => 아래 또다시 할당될 컴포넌트들을 children속성에 배열로 등록
+  children: [
+    // 해당 페이지 접근 시 최초로 할당될 페이지는 path:'' 로 지정
+    {
+      path: '',
+      component: NestedOne,
+      name: 'nestedHome',
+    },
+    {
+      path: 'one',
+      component: NestedOne,
+      name: 'nestedOne',
+    },
+    {
+      path: 'two',
+      component: NestedTwo,
+      name: 'nestedTwo',
+    },
+  ]
+},
+-------------------------------------------------------------------------------------------
+
+* 위처럼 등록하게 되면 경로는 /neted/one 형식으로 하위 경로 형식이 된다.
+따라서 하위 컴포넌트 등록시 /one 의 형식으로 절대 경로를 사용하면 안된다!
+
+▶ router replace
+: vue는 페이지 이동 시 리로드 하지 않지만, 히스토리는 계속 쌓이게 된다. 즉, 뒤로가기의 기능은 그대로 살아있다.
+replace는 페이지 이동시 히스토리에 쌓지않고 대체하겠다는 의미이고,
+뒤로가기 시 replace로 이동된 페이지는 건너뛰게된다.
+
+- router.push({path: '/home', replace: ture})
+- router.replace({path: '/home'})
+- <RouterLink to="{path: '/home', replace:true }"/>
