@@ -1,4 +1,4 @@
-import axios from "axios";
+import { posts } from ".";
 
 // const posts = [
 //     { id: 1, title: '제목1', contents: '내용1', createdAt: '2023-01-23'},
@@ -11,21 +11,21 @@ import axios from "axios";
 // ];
 
 export function getPosts(){
-    return axios.get('http://localhost:5000/posts');
+    return posts.get('/');
 }
 
 export function getPostById(id){
-    return axios.get(`http://localhost:5000/posts/${id}`);
+    return posts.get(`/${id}`);
 }
 
-export function createPostById(data){
-    return axios.post(`http://localhost:5000/posts`, data);
+export function createPost(data){
+    return posts.post(`/`, data);
 }
 
-export function updatePostById(id, data){
-    return axios.put(`http://localhost:5000/posts/${id}`, data);
+export function updatePost(id, data){
+    return posts.put(`/`, data);
 }
 
-export function deletePostById(id){
-    return axios.delete(`http://localhost:5000/posts/${id}`);
+export function deletePost(id){
+    return posts.delete(`/${id}`);
 }

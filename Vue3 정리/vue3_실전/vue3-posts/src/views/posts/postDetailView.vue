@@ -19,20 +19,25 @@
                 <button class="btn btn-outline-primary" @click="goEditPage">수정</button>
             </div>
             <div class="col-auto">
-                <button class="btn btn-outline-danger">삭제</button>
+                <button class="btn btn-outline-danger" @click="remove">삭제</button>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { getPostById } from '@/api/posts';
+import { deletePost, getPostById } from '@/api/posts';
 import router from '@/router';
 import { reactive, ref, watchEffect } from 'vue';
 
 const props = defineProps(['id']);
 
-const form = ref(getPostById(props.id));
+const form = ref({});
+
+const formData = async ()=>{
+    const response = await getPostById(props.id);
+    form.value = response.data;
+}
 
 const goListPage = ()=>{
     router.push({name: 'posts'})
@@ -42,8 +47,21 @@ const goEditPage = ()=>{
     router.push({name: 'edit', params: { 'id': props.id }});
 }
 
+const remove = async () => {
+    try {
+        if(confirm('삭제 하시겠소?')){
+            await deletePost(props.id);
+            router.push('/posts');
+        }
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+
 watchEffect(()=>{
-    form.value = getPostById(props.id);
+    // form.value = getPostById(props.id);
+    formData();
 });
 
 

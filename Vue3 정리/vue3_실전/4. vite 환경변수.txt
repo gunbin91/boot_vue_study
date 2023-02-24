@@ -1,0 +1,28 @@
+◆ vite
+: vite는 vue프로젝트를 실행시켜주는 서버이고, 환경변수를 가지고 있다.
+
+ex)
+console.log('MODE: ',     import.meta.env.MODE);	-- 환경모드(운영?개발?)
+console.log('BASE_URL: ', import.meta.env.BASE_URL);	-- 베이스url
+console.log('PROD: ',     import.meta.env.PROD);	-- 운영? true/false
+console.log('DEV: ',      import.meta.env.DEV);		-- 개발? true/false
+
+▶ 모드
+import.meta.env.MODE 출력 시 환경모드를 확인할 수 있으며,
+이 환경모드는 vite.config.js파일에 mode: 속성으로 정의된 모드이다.
+
+디폴트 값으로 
+- npm run dev: development
+- npm run build: production
+
+▶ 환경변수 설정
+프로젝트 루트 경로에 .env 파일을 만들어 설정
+ex)
+VITE_APP_API_URL = '메롱';
+
+=> 앞에 VITE를 붙여야 인식되며 vite.config.js파일에 prefix옵션으로 설정할수도 있다.
+=> import.meta.env.VITE_APP_API_URL 로 읽어들일 수 있다
+
+* .env파일은 항상 읽어들이지만 development모드에서 다른 환경변수를 읽어들이려면
+.env.development등으로 모드명을 뒤에써준 설정파일을 쓰면된다.
+( 모드가 있는 설정파일이 우선순위가 더 높음 )
