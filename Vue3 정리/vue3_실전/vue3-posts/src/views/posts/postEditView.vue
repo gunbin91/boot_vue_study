@@ -2,21 +2,20 @@
     <div>
         <h2>게시글 수정</h2>
         <hr class="my-4"/>
-        <!-- <form @submit.prevent="edit">
-            <div class="mb-3">
-                <label for="title" class="form-label">제목</label>
-                <input type="text" class="form-control" id="title" placeholder="name@example.com" v-model="form.title">
-            </div>
-            <div class="mb-3">
-                <label for="contents" class="form-label">내용</label>
-                <textarea class="form-control" id="contents" rows="3" v-model="form.contents"></textarea>
-            </div>
-            <div class="pt-4">
+
+        <PostFrom @submit.prevent="edit()" 
+        v-model:title="form.title" 
+        v-model:contents="form.contents">
+            <template #actions>
                 <button class="btn btn-outline-danger me-2"
                 @click="goDetailPage">취소</button>
                 <button class="btn btn-primary">수정</button>
-            </div>
-        </form> -->
+            </template>
+        </PostFrom>
+
+        <AlertBar :flag-alert="alertParams.flagAlert" 
+        :message="alertParams.message"
+        :type="alertParams.type"></AlertBar>
     </div>
 </template>
 
@@ -25,8 +24,15 @@ import { getPostById, updatePost } from '@/api/posts';
 import router from '@/router';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
+import PostFrom from '@/components/posts/PostForm.vue'
+import AlertBar from '@/components/AlertBar.vue'
 
 const route = useRoute();
+const alertParams = ref({
+    flagAlert: false,
+    message: '',
+    type: 'success'
+})
 
 const goDetailPage = ()=>{
     router.push({name: 'detail', params: {'id': route.params.id}})
@@ -43,10 +49,21 @@ formData();
 const edit = async () => {
     try {
         await updatePost(route.params.id, form.value);
-        router.push({name: 'detail', params: {id : route.params.id}})
+        // router.push({name: 'detail', params: {id : route.params.id}})
+        vAlert('수정이 완료되었습니다.', true);
     } catch (error) {
-        console.log(error);
+        vAlert(error, false);
     }
+}
+
+const vAlert = (message, error) => {
+    alertParams.value.flagAlert = true;
+    alertParams.value.message = message;
+    if(error == true) alertParams.value.type = 'success'
+    else alertParams.value.type = 'error'
+    setTimeout(()=>{
+        alertParams.value.flagAlert = false;
+    }, 2000)
 }
 
 </script>

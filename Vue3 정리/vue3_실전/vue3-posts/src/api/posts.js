@@ -23,7 +23,7 @@ export function createPost(data){
 }
 
 export function updatePost(id, data){
-    return posts.put(`/`, data);
+    return posts.put(`/${id}`, data);
 }
 
 export function deletePost(id){

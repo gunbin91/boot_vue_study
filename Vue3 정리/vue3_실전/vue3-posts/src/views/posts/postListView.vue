@@ -24,7 +24,7 @@
             </div>
         </div>
 
-        <nav aria-label="Page navigation example ">
+        <!-- <nav aria-label="Page navigation example ">
             <ul class="pagination justify-content-center">
                 <li class="page-item">
                     <a class="page-link" href="#" aria-label="Previous" @click.prevent="params.currentPage--" :style="currentPage <= pageCount? 'disabled': ''">
@@ -40,7 +40,12 @@
                     </a>
                 </li>
             </ul>
-        </nav>
+        </nav> -->
+        <AppPagenation 
+        :pageCount="pageCount"
+        :currentPage="params.currentPage"
+        @page="changePage"
+        ></AppPagenation>
         <hr class="my-5"/>
 
         <h3><br/>미리보기>></h3>
@@ -51,6 +56,7 @@
 <script setup>
 import PostItem from '@/components/posts/PostItem.vue'
 import postDetailView from './postDetailView.vue';
+import AppPagenation from '@/components/AppPagenation.vue'
 
 // import { getPosts } from '@/api/posts'
 import { getTests } from '@/api/tests'
@@ -73,15 +79,11 @@ const params = ref({
     contents_like: '',
 });
 
-const fetchPosts = async() =>{
-    // axios.get('http://localhost:5000/posts')
-    // .then(response=> {
-    //     posts.value = response.data;
-    //     console.log(response)
-    // }).catch(error => {
-    //     console.log('error: ', error);
-    // });
+const changePage = (page)=>{
+    params.value.currentPage = page;
+}
 
+const fetchPosts = async() =>{
     const response = await axios.get(`http://localhost:5000/posts?
     _sort=createdAt
     &_order=asc
@@ -92,19 +94,6 @@ const fetchPosts = async() =>{
     posts.value = response.data;
     postCount.value = response.headers['x-total-count'];
 }
-
-// const fetchPosts = async() =>{
-
-//     const response = await getTests(`/?_sort=createdAt
-//     &_order=asc
-//     &_page=1
-//     &_limit=1
-//     &contents_like=`);
-    
-//     posts.value = response.data;
-//     console.log(posts.value);
-// }
-
 const goPage = (id)=>{
     router.push(`/posts/${id}`);
 }
