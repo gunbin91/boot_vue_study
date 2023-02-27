@@ -6,21 +6,25 @@
         <div class="card-body">
             <h5 class="card-title">{{ contents }}</h5>
             <p class="card-text">{{ createdAt }}</p>
-            <a href="#" class="btn btn-primary">수정</a>
+        </div>
+        <div class="card-footer d-flex flex-row-reverse">
+            <button class="btn p-0" @click.prevent.stop="$emit('openModal')">
+                <i class="bi bi-emoji-heart-eyes-fill"></i>
+            </button>
         </div>
     </div>
 </template>
 
 <script setup>
 defineProps({
-    title:{
+    title: {
         type: String,
         required: true,
     },
-    contents:{
+    contents: {
         type: String,
     },
-    createdAt:{
+    createdAt: {
         type: [String, Date, Number],
         required: true,
     },

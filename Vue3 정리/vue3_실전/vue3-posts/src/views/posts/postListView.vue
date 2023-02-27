@@ -20,16 +20,19 @@
         <div class="row g-3 my-4">
             <div class="col-3" v-for="post in posts" :key="post.id" @mouseover="changeView(post.id)">
                 <PostItem :title="post.title" :contents="post.contents" :createdAt="post.createdAt"
-                    @click="goPage(post.id)"></PostItem>
+                    @click="goPage(post.id)" @openModal="openModal(post)">
+                </PostItem>
             </div>
         </div>
 
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Launch demo modal
-        </button>
-
-        <AppModal>졸려요,,,</AppModal>
+        <AppModal 
+        :show="modalParams.show"
+        :title="modalParams.title"
+        :createdAt="modalParams.createdAt"
+        @closeModal="closeModal">
+            <template #body>{{ modalParams.contents }}</template>
+            <template #footer>{{ modalParams.createdAt }}</template>
+        </AppModal>
 
         <AppPagenation :pageCount="pageCount" :currentPage="params.currentPage" @page="changePage"></AppPagenation>
         <hr class="my-5" />
@@ -68,6 +71,24 @@ const params = ref({
     title_like: '',
     contents_like: '',
 });
+
+const modalParams = ref({
+    show: false,
+    title: '',
+    contents: '',
+    createdAt: '',
+})
+
+const openModal = (post)=>{
+    modalParams.value.title = post.title;
+    modalParams.value.contents = post.contents;
+    modalParams.value.createdAt = post.createdAt;
+    modalParams.value.show = true;
+}
+
+const closeModal = () => {
+    modalParams.value.show = false;
+}
 
 const changePage = (page) => {
     params.value.currentPage = page;
