@@ -1,11 +1,11 @@
 <template>
     <div>
         <h2>게시글 목록</h2>
-        <hr class="my-4"/>
+        <hr class="my-4" />
         <form @click.prevent="">
             <div class="row g-3">
                 <div clss="col">
-                    <input type="text" class="form-control" v-model="params.contents_like"/>
+                    <input type="text" class="form-control" v-model="params.contents_like" />
                 </div>
                 <div class="col-3">
                     <select class="form-select" v-model="params.limits">
@@ -19,37 +19,25 @@
 
         <div class="row g-3 my-4">
             <div class="col-3" v-for="post in posts" :key="post.id" @mouseover="changeView(post.id)">
-                <PostItem :title="post.title" :contents="post.contents" 
-                :createdAt="post.createdAt" @click="goPage(post.id)"></PostItem>
+                <PostItem :title="post.title" :contents="post.contents" :createdAt="post.createdAt"
+                    @click="goPage(post.id)"></PostItem>
             </div>
         </div>
 
-        <!-- <nav aria-label="Page navigation example ">
-            <ul class="pagination justify-content-center">
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous" @click.prevent="params.currentPage--" :style="currentPage <= pageCount? 'disabled': ''">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <li class="page-item" v-for="page in pageCount">
-                    <a class="page-link" href="#" @click.prevent="params.currentPage = page;" :class="params.currentPage == page? 'active': ''">{{ page }}</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next" @click.prevent="params.currentPage++" :style="params.currentPage >= pageCount? 'disabled': ''">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav> -->
-        <AppPagenation 
-        :pageCount="pageCount"
-        :currentPage="params.currentPage"
-        @page="changePage"
-        ></AppPagenation>
-        <hr class="my-5"/>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Launch demo modal
+        </button>
 
-        <h3><br/>미리보기>></h3>
-        <postDetailView :id="viewId"></postDetailView>
+        <AppModal>졸려요,,,</AppModal>
+
+        <AppPagenation :pageCount="pageCount" :currentPage="params.currentPage" @page="changePage"></AppPagenation>
+        <hr class="my-5" />
+
+        <AppCard>
+            <template #header>미리보기</template>
+            <postDetailView :id="viewId"></postDetailView>
+        </AppCard>
     </div>
 </template>
 
@@ -57,6 +45,8 @@
 import PostItem from '@/components/posts/PostItem.vue'
 import postDetailView from './postDetailView.vue';
 import AppPagenation from '@/components/AppPagenation.vue'
+import AppModal from '@/components/AppModal.vue'
+import AppCard from '@/components/AppCard.vue'
 
 // import { getPosts } from '@/api/posts'
 import { getTests } from '@/api/tests'
@@ -68,7 +58,7 @@ const posts = ref([]);
 const router = useRouter();
 const viewId = ref(1);
 const postCount = ref(0);
-const pageCount = computed(()=>{
+const pageCount = computed(() => {
     return Math.ceil(postCount.value / params.value.limits);
 });
 
@@ -79,30 +69,30 @@ const params = ref({
     contents_like: '',
 });
 
-const changePage = (page)=>{
+const changePage = (page) => {
     params.value.currentPage = page;
 }
 
-const fetchPosts = async() =>{
+const fetchPosts = async () => {
     const response = await axios.get(`http://localhost:5000/posts?
     _sort=createdAt
-    &_order=asc
+    &_order=desc
     &_page=${params.value.currentPage}
     &_limit=${params.value.limits}
     &contents_like=${params.value.contents_like}`);
-    
+
     posts.value = response.data;
     postCount.value = response.headers['x-total-count'];
 }
-const goPage = (id)=>{
+const goPage = (id) => {
     router.push(`/posts/${id}`);
 }
 
-const changeView = (id)=>{
+const changeView = (id) => {
     viewId.value = id;
 }
 
-watchEffect(()=>{
+watchEffect(() => {
     fetchPosts();
 })
 </script>

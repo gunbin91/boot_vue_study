@@ -1,0 +1,71 @@
+◆ <Transition> 컴포넌트
+: vue에서 기본으로 제공되는 컴포넌트,
+default slot을 통해 전달된 컴포넌트가 나타나거나 사라질때 애니메이션을 적용할 수 있다.
+
+▶ 사용
+1. 애니메이션 효과를 적용할 태그를 <Transition>태그로 감싸준다.
+ex) 
+--------------------------------------------------------------------------------------
+<template>
+    <Transition>
+        <div v-if="flagAlert" class="alert my-4" :class="classType" role="alert">
+            {{ message }}
+        </div>
+    </Transition>
+</template>
+--------------------------------------------------------------------------------------
+
+2. 명시된 스타일을 선언한다. (태그에 적용하지 않아도 됨)
+- v-enter-from: 노출되기 전 상태
+- v-enter-active: 노출될 때
+- v-enter-to: 노출된 후 상태
+
+- v-leave-to: 사라진 후 상태
+- v-leave-active: 사라질 때
+- v-leave-from : 사라지기 전 상태
+
+ex)
+--------------------------------------------------------------------------------------
+.v-enter-from, .v-leave-to{ opacity: 0; }
+
+.v-enter-active, .v-leave-active{ transition: opacity 0.5s ease; }
+
+.v-enter-to, .v-leave-from{ opacity: 1; }
+--------------------------------------------------------------------------------------
+
+▶ <Transition>은 opacity효과 뿐 아니라 다른 효과도 적용 가능하다.
+ex) 슬라이드로 적용할 때
+1. 태그에 적용할 효과 네임을 명시 
+--------------------------------------------------------------------------------------
+<Transition name="slide">
+--------------------------------------------------------------------------------------
+
+2. v대신 명신한 name을 사용하여 클래스 정의
+--------------------------------------------------------------------------------------
+.slide-enter-from, .slide-leave-to{
+    opacity: 0;
+    transform: translateY(-30px);
+}
+
+.slide-enter-active, .slide-leave-active{
+    transition: all 0.5s ease;
+}
+
+.slide-enter-to, .slide-leave-from{
+    opacity: 1;
+    transform: translateY(0px);
+}
+--------------------------------------------------------------------------------------
+
+◆ <TransitionGroup> 컴포넌트
+Transition컴포넌트를 그룹으로 사용할 때 사용한다. v-for등과 사용
+사용법은 transition과 동일하다.
+
+ex)
+<template>
+    <TransitionGroup name="slide">
+        <div v-for="item in alertParams" :key="item.index" class="alert my-4" :class="item.type" role="alert">
+            {{ item.message }}
+        </div>
+    </TransitionGroup>
+</template>

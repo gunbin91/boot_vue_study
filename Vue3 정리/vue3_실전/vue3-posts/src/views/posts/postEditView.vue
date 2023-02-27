@@ -13,9 +13,7 @@
             </template>
         </PostFrom>
 
-        <AlertBar :flag-alert="alertParams.flagAlert" 
-        :message="alertParams.message"
-        :type="alertParams.type"></AlertBar>
+        <AlertBar :alertParams="alertParams"></AlertBar>
     </div>
 </template>
 
@@ -28,11 +26,12 @@ import PostFrom from '@/components/posts/PostForm.vue'
 import AlertBar from '@/components/AlertBar.vue'
 
 const route = useRoute();
-const alertParams = ref({
-    flagAlert: false,
-    message: '',
-    type: 'success'
-})
+// const alertParams = ref({
+//     flagAlert: false,
+//     message: '',
+//     type: 'success'
+// })
+const alertParams = ref([]);
 
 const goDetailPage = ()=>{
     router.push({name: 'detail', params: {'id': route.params.id}})
@@ -49,7 +48,6 @@ formData();
 const edit = async () => {
     try {
         await updatePost(route.params.id, form.value);
-        // router.push({name: 'detail', params: {id : route.params.id}})
         vAlert('수정이 완료되었습니다.', true);
     } catch (error) {
         vAlert(error, false);
@@ -57,12 +55,12 @@ const edit = async () => {
 }
 
 const vAlert = (message, error) => {
-    alertParams.value.flagAlert = true;
-    alertParams.value.message = message;
-    if(error == true) alertParams.value.type = 'success'
-    else alertParams.value.type = 'error'
+    alertParams.value.push({
+        message: message,
+        type: error == true? 'alert-success':'alert-danger'
+    })
     setTimeout(()=>{
-        alertParams.value.flagAlert = false;
+        alertParams.value.shift();
     }, 2000)
 }
 
