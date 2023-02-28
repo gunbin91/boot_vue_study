@@ -28,7 +28,9 @@
 <script setup>
 import { deletePost, getPostById } from '@/api/posts';
 import router from '@/router';
-import { reactive, ref, watchEffect } from 'vue';
+import { reactive, ref, watchEffect, inject } from 'vue';
+
+const dayjs = inject('dayjs');
 
 const props = defineProps(['id']);
 
@@ -37,6 +39,7 @@ const form = ref({});
 const formData = async ()=>{
     const response = await getPostById(props.id);
     form.value = response.data;
+    form.value.createdAt = dayjs(form.value.createdAt).format('YYYY.MM.DD HH:mm:ss');
 }
 
 const goListPage = ()=>{

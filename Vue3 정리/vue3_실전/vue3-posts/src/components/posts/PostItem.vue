@@ -5,7 +5,7 @@
         </div>
         <div class="card-body">
             <h5 class="card-title">{{ contents }}</h5>
-            <p class="card-text">{{ createdAt }}</p>
+            <p class="card-text">{{ $dayjs(createdAt).format('YYYY.MM.DD HH:mm:ss') }}</p>
         </div>
         <div class="card-footer d-flex flex-row-reverse">
             <button class="btn p-0" @click.prevent.stop="$emit('openModal')">

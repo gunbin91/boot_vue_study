@@ -4,8 +4,10 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from '@/router'
+import dayjs from '@/plugin/dayjs';
 
 const app = createApp(App)
+app.use(dayjs);
 app.use(router);
 app.mount('#app');
 

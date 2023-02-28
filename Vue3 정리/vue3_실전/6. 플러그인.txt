@@ -101,3 +101,26 @@ export default {
 --------------------------------------------------------------------------------
 
 * js파일로 만들어 전역으로 등록도 가능하다.
+
+▶ dayjs 라이브러리
+: dayjs라이브러리(날짜 포맷팅)를 예시로 플러그인을 만들어보기
+
+1. npm i dayjs
+
+2. 플러그인 작성(ex) src>plugin>dayjs.js
+--------------------------------------------------------------------------------
+import dayjs from "dayjs";
+
+export default {
+  install(app){
+    app.config.globalProperties.$dayjs = dayjs;	//	전역에서 $dayjs로 접근가능
+    app.provide('dayjs', dayjs);		//	전역에서 주입받을 수 있게 셋팅
+  }
+}
+--------------------------------------------------------------------------------
+
+3. main.js / app.use(dayjs)로 전역설정
+
+4. 
+- 템플릿: {{ $dayjs(날짜데이터).format('YYYY.MM.DD HH:mm:ss') }}
+- 스크립트: const dayjs = inject('dayjs'); 하여 동일하게 사용
