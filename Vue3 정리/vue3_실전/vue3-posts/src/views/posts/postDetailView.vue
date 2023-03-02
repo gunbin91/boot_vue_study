@@ -29,18 +29,24 @@
 import { deletePost, getPostById } from '@/api/posts';
 import router from '@/router';
 import { reactive, ref, watchEffect, inject } from 'vue';
+import { useAxios } from '@/composables/useAxios'
 
 const dayjs = inject('dayjs');
 
 const props = defineProps(['id']);
 
-const form = ref({});
+// const form = ref({});
 
-const formData = async ()=>{
-    const response = await getPostById(props.id);
-    form.value = response.data;
-    form.value.createdAt = dayjs(form.value.createdAt).format('YYYY.MM.DD HH:mm:ss');
-}
+const axiosUrl = ref(`/posts/${props.id}`);
+
+const {response, data:form, error, loading} = useAxios(axiosUrl.value, { method: 'get' });
+
+
+// const formData = async ()=>{
+//     const response = await getPostById(props.id);
+//     form.value = response.data;
+//     form.value.createdAt = dayjs(form.value.createdAt).format('YYYY.MM.DD HH:mm:ss');
+// }
 
 const goListPage = ()=>{
     router.push({name: 'posts'})
@@ -62,10 +68,10 @@ const remove = async () => {
 
 }
 
-watchEffect(()=>{
-    // form.value = getPostById(props.id);
-    formData();
-});
+// watchEffect(()=>{
+//     // form.value = getPostById(props.id);
+//     formData();
+// });
 
 
 </script>

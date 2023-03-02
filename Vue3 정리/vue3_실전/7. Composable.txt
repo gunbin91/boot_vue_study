@@ -1,0 +1,73 @@
+◆ Composable
+: vue composition API를 활용하여 상태 저장 비즈니스 로직을 캡슐화하고 재사용 하는 기능
+
+▶ 사용예시
+: 아래와 같이 alert박스 출력 컴포넌트가 있을 때 해당 컴포넌트를 출력할 뷰컴포넌트에는
+매번 아래와 같은 스크립트 추가가 필요하다
+따라서 반복되는 해당 비즈니스 로직을 캡슐화 하여 사용할 수 있다.
+----------------------------------------------------------------------------------
+<AlertBar :alertParams="alertParams"></AlertBar>
+
+<script>
+....
+const alertParams = ref([]);
+
+const vAlert = (message, error) => {
+  alertParams.value.push({
+      message: message,
+      type: error == true? 'alert-success':'alert-danger'
+  })
+  setTimeout(()=>{
+      alertParams.value.shift();
+  }, 2000)
+}
+</script>
+----------------------------------------------------------------------------------
+
+1. 통상 src>composable하위에 js파일로 만들며
+함수의 이름은 앞에 use를 붙여 작성하는것이 통상적
+
+ex) alert.js
+----------------------------------------------------------------------------------
+import { ref } from "vue";
+
+export function userAlert() {
+  const alertParams = ref([]);
+
+  const vAlert = (message, error) => {
+    alertParams.value.push({
+        message: message,
+        type: error == true? 'alert-success':'alert-danger'
+    })
+    setTimeout(()=>{
+        alertParams.value.shift();
+    }, 2000)
+  }
+
+  return{
+    alertParams,
+    vAlert,
+  }
+}
+----------------------------------------------------------------------------------
+
+** const alertParams = ref([]); 부분은 useAlert()함수 안에 선언된 변수이기 때문에 
+import시마다 새로 생성이 된다. 즉, 전역적으로 공유되는 컴포넌트일 경우, 
+함수 밖으로 빼주면 정상적으로 작동이 가능하지만,
+=> 통상적으로 vuex store기능을 사용하면 된다.
+
+
+2. 위처럼 정의해 두게되면 아래와 같이 import하여 매번 작성하던 번거로움이 없어진다.
+
+ex)
+----------------------------------------------------------------------------------
+<AlertBar :alertParams="alertParams"></AlertBar>
+
+<script setup>
+import {useAlert} from '@/composables/alert'	// composable임포트
+
+const {alertParams, vAlert} = useAlert();	// 함수, 상태 가져오기
+
+...	// => 그대로 사용만 해주면 된다.
+</script>
+----------------------------------------------------------------------------------

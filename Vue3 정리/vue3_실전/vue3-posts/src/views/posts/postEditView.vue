@@ -26,11 +26,6 @@ import PostFrom from '@/components/posts/PostForm.vue'
 import AlertBar from '@/components/AlertBar.vue'
 
 const route = useRoute();
-// const alertParams = ref({
-//     flagAlert: false,
-//     message: '',
-//     type: 'success'
-// })
 const alertParams = ref([]);
 
 const goDetailPage = ()=>{

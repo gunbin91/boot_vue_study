@@ -8,7 +8,7 @@
                     <input type="text" class="form-control" v-model="params.contents_like" />
                 </div>
                 <div class="col-3">
-                    <select class="form-select" v-model="params.limits">
+                    <select class="form-select" v-model="params._limit">
                         <option value="4" selected>4 개씩보기</option>
                         <option value="8">8 개씩보기</option>
                         <option value="12">12 개씩보기</option>
@@ -16,6 +16,9 @@
                 </div>
             </div>
         </form>
+        
+        <AppError :message="err" v-if="error != ''"></AppError>
+        <AppLoading v-if="loading"></AppLoading>
 
         <div class="row g-3 my-4">
             <div class="col-3" v-for="post in posts" :key="post.id" @mouseover="changeView(post.id)">
@@ -25,6 +28,15 @@
             </div>
         </div>
 
+        
+        <AppPagenation :pageCount="pageCount" :currentPage="params._page" @page="changePage"></AppPagenation>
+        <hr class="my-5" />
+        
+        <AppCard>
+            <template #header>미리보기</template>
+            <postDetailView :id="viewId"></postDetailView>
+        </AppCard>
+
         <AppModal 
         :show="modalParams.show"
         :title="modalParams.title"
@@ -33,14 +45,6 @@
             <template #body>{{ modalParams.contents }}</template>
             <template #footer>{{ modalParams.createdAt }}</template>
         </AppModal>
-
-        <AppPagenation :pageCount="pageCount" :currentPage="params.currentPage" @page="changePage"></AppPagenation>
-        <hr class="my-5" />
-
-        <AppCard>
-            <template #header>미리보기</template>
-            <postDetailView :id="viewId"></postDetailView>
-        </AppCard>
     </div>
 </template>
 
@@ -50,25 +54,20 @@ import postDetailView from './postDetailView.vue';
 import AppPagenation from '@/components/AppPagenation.vue'
 import AppModal from '@/components/AppModal.vue'
 import AppCard from '@/components/AppCard.vue'
-
-// import { getPosts } from '@/api/posts'
-import { getTests } from '@/api/tests'
-import { ref, computed, watchEffect } from 'vue';
+import AppError from '@/components/AppError.vue'
+import AppLoading from '@/components/AppLoading.vue'
+import { useAxios } from '@/composables/useAxios';
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
-import axios from "axios";
 
-const posts = ref([]);
 const router = useRouter();
 const viewId = ref(1);
-const postCount = ref(0);
-const pageCount = computed(() => {
-    return Math.ceil(postCount.value / params.value.limits);
-});
 
 const params = ref({
-    currentPage: 1,
-    limits: 4,
-    title_like: '',
+    _sort: 'createdAt',
+    _order: 'desc',
+    _page: 1,
+    _limit: 4,
     contents_like: '',
 });
 
@@ -91,20 +90,9 @@ const closeModal = () => {
 }
 
 const changePage = (page) => {
-    params.value.currentPage = page;
+    params.value._page = page;
 }
 
-const fetchPosts = async () => {
-    const response = await axios.get(`http://localhost:5000/posts?
-    _sort=createdAt
-    &_order=desc
-    &_page=${params.value.currentPage}
-    &_limit=${params.value.limits}
-    &contents_like=${params.value.contents_like}`);
-
-    posts.value = response.data;
-    postCount.value = response.headers['x-total-count'];
-}
 const goPage = (id) => {
     router.push(`/posts/${id}`);
 }
@@ -113,7 +101,12 @@ const changeView = (id) => {
     viewId.value = id;
 }
 
-watchEffect(() => {
-    fetchPosts();
-})
+// axios
+const {response, data: posts, error, loading} = useAxios('/posts', {method: 'get', params: params.value });
+
+const postCount = computed(()=> response.value.headers['x-total-count']);
+const pageCount = computed(() => {
+    return Math.ceil(postCount.value / params.value._limit);
+});
+
 </script>
