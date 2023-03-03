@@ -8,7 +8,7 @@ setTimeout( ()=> { console.log("1초뒤 실행"); }, 1000);
     
 let newArr = [1, 2, 3].map(function(v){ return v * 2 });
 let newArr2 = [1, 2, 3].map((v)=>{ return v * 2 });
-let newArr3 = [1, 2, 3].map((v)=> v * 2 );	=>	한 줄일 경우 ()=>는 return 없이 가능
+let newArr3 = [1, 2, 3].map((v)=> v * 2 );	=>	한 줄일 경우 ()=>는 {}중괄호와 return 생략가능
 
 ▶ Arrow function의 this context
 : ES5에서 객체 안에서 정의된 메서드의 this는 해당 인스턴스가 아닌 window를 가리킨다.

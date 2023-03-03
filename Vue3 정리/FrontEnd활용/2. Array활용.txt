@@ -4,7 +4,7 @@
 Event.preventDefault()
 
 ▶ Array 활용
-- map()
+->> map()
 : 전체 배열 순회(값 수정이 필요할 때)
 ex)
 const numbers = [1, 2, 3, 4, 5]
@@ -14,7 +14,7 @@ const result = numbers.map(
 });
 => return으로 값을 변경해줌
 
-- some()
+->> some()
 : 조건에 맞는 값이 하나라도 있는 경우 true 아니면 false반환하여 검색하는 기능
 ( 두번째 인자로 index도 받을 수 있음 )
 ex)
@@ -24,7 +24,7 @@ const t = numbers.some((v) => {
     })
 console.log(t);	//	true
 
-- every()
+->> every()
 : some과 조건에 모든값이 일치할 경우에만 true
 ex)
 const numbers = [1, 2, 3, 4, 5]
@@ -36,7 +36,7 @@ console.log(e)	//	true;
 ** 위 메서드들의 내용이 한줄일 경우 {}와 return 키워드는
 제거가 가능하다
 
-- filter()
+->> filter()
 : 조건에 맞는 요소만 반환하여 새로운 배열을 만듬
 ex) 
 const numbers = [1, 2, 3, 4, 5]
@@ -45,7 +45,7 @@ const f = numbers.filter((v) =>{
 })
 console.log(f);	//	[2, 4]
 
-- reduce()
+->> reduce()
 : 누적값 계산?
 누적값, 현재값, 인덱스, 배열을 인자로 받아
 인덱스 1부터 순회하여 리턴값을 누적
