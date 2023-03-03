@@ -12,6 +12,8 @@ import NestedView from '@/views/nested/NestedView.vue';
 import NestedOne from '@/views/nested/NestedOne.vue';
 import NestedTwo from '@/views/nested/NestedTwo.vue';
 
+import MyPage from '@/views/MypageView.vue';
+
 const routes = [
   {
     path: '/',
@@ -48,6 +50,20 @@ const routes = [
     name: 'edit',
   },
   {
+    path: '/mypage',
+    component: MyPage,
+    name: 'mypage',
+    beforeEnter: (to, from) =>{
+      // console.log('to: ', to);
+      // console.log('from: ', from);
+      // return false;
+      // return {name: 'Home'};
+      // if(Object.keys(to.query).length > 0){
+      //   return { path: to.path, query: {} };
+      // }
+    }
+  },
+  {
     path: '/:pathMatch(.*)*',
     component: NotFoundView,
     name: 'notfound',
@@ -81,5 +97,17 @@ const router = createRouter({
   routes,
   mode: 'history'
 });
+
+router.beforeEach((to, from)=>{
+  console.log('to: ', to);
+  console.log('from: ', from);
+  if(to.name === 'mypage'){
+    // return false; // 접근불가
+    // router.push({name: 'Home'});  // 리다이렉트
+    // return {name: 'Home'}
+  }
+})
+// 세번째 인자로 next를 받아 next({name: 'Home'}); 으로도 처리가 가능하나, 권장사항X
+
 
 export default router;

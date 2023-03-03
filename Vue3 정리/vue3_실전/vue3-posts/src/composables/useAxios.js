@@ -3,6 +3,10 @@ import { isReactive, isRef, ref, unref, watchEffect } from "vue";
 
 axios.defaults.baseURL = 'http://127.0.0.1:5000'
 
+const defaultOptions = {
+  imediate: true,
+}
+
 export const useAxios = (url, config = {}, options = {}) => {
   const response = ref(null);
   const data = ref([]);
@@ -17,9 +21,8 @@ export const useAxios = (url, config = {}, options = {}) => {
   };
 
   const execute = (body)=>{
-    console.log('axios요청: ', url);
     loading.value = true;
-    axios(url, {
+    axios(unref(url), {
       ...config, 
       params: unref(params),
       data: typeof body === 'object'? body: {},
@@ -42,7 +45,7 @@ export const useAxios = (url, config = {}, options = {}) => {
     })
   };
 
-  if(isRef(params) || isReactive(params)){
+  if(isRef(params) || isReactive(params) || isRef(url)){
     console.log("반응형");
     watchEffect(()=>{
       execute();

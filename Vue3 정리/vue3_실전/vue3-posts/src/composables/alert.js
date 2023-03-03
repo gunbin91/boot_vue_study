@@ -1,17 +1,8 @@
-import { ref } from "vue";
+import { useAlertStore } from "@/store/alert";
 
 export function useAlert() {
-  const alertParams = ref([]);
-
-  const vAlert = (message, error) => {
-    alertParams.value.push({
-        message: message,
-        type: error == true? 'alert-success':'alert-danger'
-    })
-    setTimeout(()=>{
-        alertParams.value.shift();
-    }, 2000)
-  }
+  const alertStore = useAlertStore();
+  const {alerts:alertParams, vAlert} = alertStore;
 
   return{
     alertParams,

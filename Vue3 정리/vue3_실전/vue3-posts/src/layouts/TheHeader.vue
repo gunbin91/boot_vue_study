@@ -20,6 +20,7 @@
             <RouterLink class="nav-link" to="/about">About</RouterLink>
             <RouterLink class="nav-link" to="/posts">PostList</RouterLink>
             <RouterLink class="nav-link" to="/nested">Nested</RouterLink>
+            <RouterLink class="nav-link" to="/mypage">Mypage</RouterLink>
           </div>
           <div class="d-flex">
             <button class="btn btn-outline-light"  type="button" 

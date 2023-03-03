@@ -28,7 +28,7 @@
 <script setup>
 import { deletePost, getPostById } from '@/api/posts';
 import router from '@/router';
-import { reactive, ref, watchEffect, inject } from 'vue';
+import { reactive, ref, watchEffect, inject, computed } from 'vue';
 import { useAxios } from '@/composables/useAxios'
 
 const dayjs = inject('dayjs');
@@ -37,9 +37,9 @@ const props = defineProps(['id']);
 
 // const form = ref({});
 
-const axiosUrl = ref(`/posts/${props.id}`);
+const axiosUrl = computed(()=>`/posts/${props.id}`);
 
-const {response, data:form, error, loading} = useAxios(axiosUrl.value, { method: 'get' });
+const {response, data:form, error, loading} = useAxios(axiosUrl, { method: 'get' });
 
 
 // const formData = async ()=>{

@@ -11,11 +11,12 @@
 <script setup>
 import { computed } from 'vue'
 
-const props = defineProps({
-    alertParams: Array,
-    message: String,
-    type: String
-})
+import { useAlertStore } from '@/store/alert';
+import { storeToRefs } from 'pinia';
+
+const alertStore = useAlertStore();
+const { alerts:alertParams } = storeToRefs(alertStore);
+
 </script>
 
 <style>
@@ -24,18 +25,6 @@ const props = defineProps({
     top: 35px;
     right: 10px;
 }
-
-/* .v-enter-from, .v-leave-to{
-    opacity: 0;
-}
-
-.v-enter-active, .v-leave-active{
-    transition: opacity 0.5s ease;
-}
-
-.v-enter-to, .v-leave-from{
-    opacity: 1;
-} */
 
 .slide-enter-from,
 .slide-leave-to {

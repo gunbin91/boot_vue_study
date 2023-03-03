@@ -1,0 +1,53 @@
+◆ 네비게이션 가드
+: Vue Router에서 제공되는 기능으로, 페이지 이동을 리다이렉션 또는 취소하여
+특정 페이지 진입을 보호하는 역할
+- 전역가드/라우트가드/컴포넌트내가드
+
+▶ 전역가드
+: 라우터 생성 js파일내에서 할 수 있으며, 페이지 이동 시 beforeEach가 호출된다.
+ex)
+------------------------------------------------------------------------------------
+router.beforeEach((to, from)=>{
+  console.log('to: ', to);		// 이동할 route정보
+  console.log('from: ', from);		// 이동하기 전 route정보
+  if(to.name === 'mypage'){
+    return false; 			// return false;시 접근이 안됨
+    router.push({name: 'Home'});  	// router.push로 리다이렉트 가능
+    return {name: 'Home'}		// 리턴으로도 리다이렉트 가능
+  }
+})
+------------------------------------------------------------------------------------
+
+▶ 라우트가드
+: 등록한 라우트안에서 해당 경로에만 가드를 설정하는 것으로
+beforeEnter: (to, from)속성을 사용하여 등록
+ex)
+------------------------------------------------------------------------------------
+{
+    path: '/mypage',
+    component: MyPage,
+    name: 'mypage',
+    beforeEnter: (to, from) =>{
+      // console.log('to: ', to);			// 전역가드와 똑같이 사용가능
+      // console.log('from: ', from);
+      // return false;
+      // return {name: 'Home'};
+      if(Object.keys(to.query).length > 0){
+        return { path: to.path, query: {} };	// 해당 방식으로 뒤에붙는 쿼리스트링을 제거할 수도 있다.
+      }
+    }
+  },
+------------------------------------------------------------------------------------
+
+▶ 컴포넌트 가드
+: 컴포넌트 내에서 지정하는 가드 
+
+- beforeRouteEnter(to, from)
+: 네비게이션 이동이 확정된 후 컴포넌트가 만들어 지기 전에 호출( setup함수보다 먼저 호출 )
+=> 즉, setup함수안이 아닌 밖에(일반script)에서 선언해야 한다.
+- beforeRouteUpdate(to, from)
+:  컴포넌트 랜더링 경로가 변경된 후 호출
+- beforeRouteLeave(to, from)
+: 라우트를 떠날 때 호출
+
+** 위 함수는 Vue2(OptionsAPI)에서 사용하는 이름으로, Vue3(CompositionAPI)에서는 앞에 on을 붙여 사용한다.

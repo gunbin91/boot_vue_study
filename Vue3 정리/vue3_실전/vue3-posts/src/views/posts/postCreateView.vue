@@ -21,7 +21,6 @@
 <script setup>
 import { ref } from 'vue';
 import { createPost } from '@/api/posts'
-import router from '@/router';
 import PostFrom from '@/components/posts/PostForm.vue'
 import AlertBar from '@/components/AlertBar.vue'
 import { useAlert } from '@/composables/alert'
@@ -32,16 +31,6 @@ const form = ref({
 })
 
 const loading = ref(false);
-
-// const vAlert = (message, error) => {
-//     alertParams.value.push({
-//         message: message,
-//         type: error == true? 'alert-success':'alert-danger'
-//     })
-//     setTimeout(()=>{
-//         alertParams.value.shift();
-//     }, 2000)
-// }
 
 const { alertParams, vAlert } = useAlert();
 

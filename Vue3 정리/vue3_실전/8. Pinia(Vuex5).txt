@@ -1,0 +1,56 @@
+◆ Pinia(Vuex5)
+: 컴포넌트 구조가 복잡해질 경우 Props, Emit방식으로 처리하기 매우 비효율적이게 된다.
+따라서 중앙 상태관리를 위한 공식 라이브러리가 Pinia(Vuex)이며,
+Vue2에서는 Vuex를 공식적으로 사용했지만, Vue3에서는 Pinia를 공식적으로 사용한다.
+
+▶ 사용
+1. npm install pinia
+
+2. import { createPinia } from 'pinia'	/	app.use(createPinia());
+
+3. store작성( src>store )
+ex) counter.js
+--------------------------------------------------------------------------------------
+import { defineStore } from "pinia";
+
+export const useCounterStore = defineStore('counter', {
+  state: () => ({
+    counter: 1,
+  }),
+  getters: {
+    doubleCount: (state) => state.counter * 2,
+  },
+  actions: {
+    increment() {
+      this.counter++;
+    }
+  },
+});
+--------------------------------------------------------------------------------------
+- defineStore('counter', ... ): counter는 구분자, 용도에 맞는 store를 분리하는 것이 좋기 때문
+- state: 상태 저장 변수를 정의
+- getter: 상태 저장 변수를 가져오는 함수 정의
+- actions: 함수정의
+
+** increment()를 ()=>로 정의하지 않은 이유는 this를 사용할 수 없기 때문이다.
+store의 this로 접근하기 위해서는 함수를 method()형식으로 정의해야한다.
+
+4. 사용
+--------------------------------------------------------------------------------------
+<p>store.counter : {{ store.counter }}</p>
+<p>store.doubleCount: {{ store.doubleCount }}</p>
+<p><button @click="store.increment">increment</button></p>
+
+import { useCounterStore } from '@/store/counter';
+const store = useCounterStore();
+--------------------------------------------------------------------------------------
+
+▶ storeToRefs()
+store로 가져온 변수또한 reactive반응형 데이터이기 때문에
+구조할당 시 반응성을 잃게 된다. 따라서 반응성을 유지해야하기 위해서는
+구조분해 할당 시 const {counter} = storeToRefs(store) 형식으로 가져와야 한다.
+( 함수를 가져올때는 그냥 구조분해 할당해도 무관 )
+
+** Vuex는 store에 정의한 변수를 직접적으로 변경이 불가하고, store에 정의된 함수를 통해 수정할 수 있었지만,
+Pinia에서는 가져온 변수를 직접적으로 변경이 가능하다!!
+(Pinia는 뮤테이션 개념이 없음)
