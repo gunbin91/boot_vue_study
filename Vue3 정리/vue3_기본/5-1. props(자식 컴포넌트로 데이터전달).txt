@@ -88,7 +88,7 @@ setup (props) {
 },
 
 ▶ $props
-: OptionsAPI에서부터 쓰이던 방식으로 템플릿 내 {{ $props }}로도 데이터를 가져올 수 있다.
+: OptionsAPI에서부터 쓰이던 방식으로 템플릿 내 {{ $props }}로도 데이터를 가져올 순 있다.
 
 ▶ props 네이밍 규칙
 : props도 컴포넌트와 마찬가지로 케밥/카멜 케이스를 사용하며

@@ -2,6 +2,8 @@
 : 뷰 컴포넌트는 RouterView로도 사용할 수 있고, 하위 컴포넌트로도 사용될 수 있다.
 하지만, 하위 컴포넌트로 사용될 경우 route.params를 사용하기 어려워지고
 RouterView로 사용될 경우 props사용이 불가하기때문에 라우터에서 props기능을 지원한다.
+=> 즉, 하위컴포넌트 로서의 기능과 경로이동 시 실행되는 로직을 props하나로 통일 가능해진다.
+
 
 ▶ route.params / props 사용
 1. 라우트 등록시 props속성을 true로 설정

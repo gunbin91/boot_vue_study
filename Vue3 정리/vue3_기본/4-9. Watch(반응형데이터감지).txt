@@ -43,7 +43,8 @@ ex) watch(() => obj.count, (newValue)=>{});
 
 
 ▶ watch 즉시실행
-: 세번째 인자로 { immediate: true, }를 넘겨주면 된다.
+: 세번째 인자로 { immediate: true, }를 넘겨주게 되면, 변경이 감지되지 않아도 
+최초 즉시실행을 호출할 수 있다.
 ex) watch( () => {return x.value + y.value}, (sumvalue, oldvalue)=>{ }, {immediate: true});
 
 ▶ computed VS watch
