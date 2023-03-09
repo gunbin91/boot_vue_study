@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} %p %c[%method:%line] - %msg%n">
+	</property>
+	
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+	<layout class="ch.qos.Logback.classic.patternLayout">
+		<Pattern>${LOG_PATTERN}</Pattern>
+	</layout>
+	</appender>
+</configuration>

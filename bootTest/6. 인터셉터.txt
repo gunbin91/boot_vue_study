@@ -1,0 +1,55 @@
+◆ 인터셉터
+
+▶ 인터셉터 생성
+: HandlerInterceptorAdapter를 extends하여 생성하고
+postHandle, preHandle를 오버라이드 하여 작성한다.
+
+ex)
+------------------------------------------------------------------------------------
+package com.example.demo.configuration.servlet.handler;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
+public class BaseHandlerInterceptor extends HandlerInterceptorAdapter{
+	
+	Logger logger = LoggerFactory.getLogger(getClass());
+
+	@Override
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return super.preHandle(request, response, handler);
+	}
+
+	@Override
+	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
+			ModelAndView modelAndView) throws Exception {
+		// TODO Auto-generated method stub
+		super.postHandle(request, response, handler, modelAndView);
+	}
+	
+	
+}
+------------------------------------------------------------------------------------
+
+▶ 인터셉터 등록
+WebConfiguration에 implements WebMvcConfigurer하여
+addInterceptors() 메서드를 오버라이드 하여 등록한다.
+ex)
+------------------------------------------------------------------------------------
+@Bean
+public BaseHandlerInterceptor baseHandlerInterceptor() {
+	return new BaseHandlerInterceptor();
+}
+	
+@Override
+public void addInterceptors(InterceptorRegistry registry) {
+	registry.addInterceptor(baseHandlerInterceptor());
+}
+------------------------------------------------------------------------------------

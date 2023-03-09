@@ -38,9 +38,9 @@ public class JwtFilter extends GenericFilterBean{
 		
 		if(StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
 			String username = tokenProvider.getUsernameFromToken(jwt);
-			System.out.println("JwtFilter_토큰매칭username: " + username);
+//			System.out.println("JwtFilter_토큰매칭username: " + username);
 		}else {
-			System.out.println("JwtFilter_헤더에 유효한 jwt 토큰이 없습니다.");
+//			System.out.println("JwtFilter_헤더에 유효한 jwt 토큰이 없습니다.");
 		}
 		chain.doFilter(request, response);
 	}

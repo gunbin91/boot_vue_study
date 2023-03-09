@@ -1,8 +1,0 @@
-package com.example.demo.domain;
-@Data
-public class Board {
-	private int boardSeq;
-	private String title;
-	private String contents;
-	private Date regData;
-}

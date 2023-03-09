@@ -1,0 +1,9 @@
+package com.example.demo.configuration.servlet.handler;
+
+import org.apache.logging.log4j.Logger;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
+public class BaseHandlerInterceptor extends HandlerInterceptorAdapter{
+	
+	Logger logger = oggerFactory.getLogger(getClass());
+}
